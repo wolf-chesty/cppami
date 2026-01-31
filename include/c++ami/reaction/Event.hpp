@@ -1,0 +1,47 @@
+// Copyright (c) 2026 Christopher L Walker
+// SPDX-License-Identifier: MIT
+
+#ifndef REACTION_EVENT_HPP
+#define REACTION_EVENT_HPP
+
+#include "c++ami/reaction/Reaction.hpp"
+#include "c++ami/util/KeyValDict.hpp"
+
+namespace cpp_ami::reaction {
+
+///
+/// @class Event
+///
+/// @brief Contains data for an AMI event that is associated to an AMI action.
+///
+/// This object is an interface for an AMI event object that is associated with an AMI action. By inheriting matched
+/// events from this base class it can be a bit easier writing polymorphic code taking advantage of the type of this
+/// object.
+///
+class Event
+    : public Reaction
+    , public util::KeyValDict
+{
+public:
+    Event() = delete;
+    Event(Event const &) = default;
+    Event(Event &&) noexcept = default;
+
+    /// @brief Creates an object with the contents of a \c KeyValDict.
+    ///
+    /// @param dict KeyValDict object containing event values.
+    explicit Event(KeyValDict dict) noexcept;
+
+    ~Event() override = default;
+
+    Event& operator=(Event const &) = default;
+    Event& operator=(Event &&) noexcept = default;
+
+    // cpp_ami::reaction::Reaction interface
+    bool is_success() const override;
+    std::string to_string() const override;
+};
+
+}
+
+#endif
