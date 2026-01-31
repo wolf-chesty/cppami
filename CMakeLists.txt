@@ -8,20 +8,18 @@ project (c++ami VERSION 0.0.0.0 LANGUAGES CXX C)
 # ----------------------------------------------------------------------------------------------------------------------
 # Options
 # ----------------------------------------------------------------------------------------------------------------------
-option (SANITIZE_ADDRESS "Enable AddressSanitizer (ASan) for memory error detection tests." OFF)
+option (CPPAMI_SANITIZE_ADDRESS "Enable AddressSanitizer (ASan) for memory error detection tests." OFF)
 
-option (SANITIZE_THREAD "Enable ThreadSanitizer (TSan) for detecting thread-related issues." OFF)
+option (CPPAMI_SANITIZE_THREAD "Enable ThreadSanitizer (TSan) for detecting thread-related issues." OFF)
 
-option (UNIT_TESTS "Build unit tests" ON)
+option (CPPAMI_UNIT_TESTS "Build unit tests" ON)
 
-option (EXAMPLE "Build example" ON)
+option (CPPAMI_EXAMPLE "Build example" ON)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Project dependencies
 # ----------------------------------------------------------------------------------------------------------------------
-include (third_party/cpp-httplib.cmake)
 include (third_party/fmt.cmake)
-include (third_party/pugixml.cmake)
 include (third_party/quill.cmake)
 
 # ----------------------------------------------------------------------------------------------------------------------
