@@ -10,12 +10,9 @@
 #include "c++ami/StreamParser.hpp"
 #include <fmt/core.h>
 
-#include <quill/Backend.h>
-
 using namespace cpp_ami;
 
-Connection::Connection(quill::Logger *logger, std::string_view hostname, uint16_t port)
-    : logger_(logger)
+Connection::Connection(std::string_view hostname, uint16_t port)
 {
     auto sock = std::make_shared<net::TcpSocket>(hostname, port);
 

@@ -11,8 +11,6 @@
 #include <string_view>
 #include <unordered_map>
 
-#include <quill/Logger.h>
-
 namespace cpp_ami {
 
 namespace action {
@@ -52,7 +50,7 @@ public:
     ///
     /// @param hostname Hostname of the AMI server to attach to.
     /// @param port Port number on the AMI server to attach to.
-    explicit Connection(quill::Logger *logger, std::string_view hostname, uint16_t port = 5038);
+    explicit Connection(std::string_view hostname, uint16_t port = 5038);
 
     virtual ~Connection();
 
@@ -112,8 +110,6 @@ private:
     std::unique_ptr<net::SocketReader> reader_;     ///< Object responsible for pulling messages from the AMI socket.
     std::unique_ptr<net::SocketWriter> writer_;     ///< Object responsible for writing messages to the AMI socket.
     std::unique_ptr<StreamParser> stream_parser_;   ///< Object responsible for parsing the socket stream into individual AMI messages.
-
-    quill::Logger *logger_{nullptr};    ///< Pointer to the logger.
 };
 
 } // namespace cpp_ami

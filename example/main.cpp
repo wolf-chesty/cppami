@@ -21,23 +21,11 @@
 #include <cassert>
 #include <iostream>
 
-#include <quill/Backend.h>
-#include <quill/Frontend.h>
-#include <quill/Logger.h>
-#include <quill/LogMacros.h>
-#include <quill/sinks/ConsoleSink.h>
-
 int main()
 {
-    quill::Backend::start();
+    cpp_ami::Connection conn("10.3.29.93");
 
-    auto logger = quill::Frontend::create_or_get_logger("root",
-                                                    quill::Frontend::create_or_get_sink<quill::ConsoleSink>("sink_id_1"));
-    LOG_INFO(logger, "Starting example");
-
-    cpp_ami::Connection conn(logger, "10.3.29.93");
-
-    conn.add_callback([logger](cpp_ami::util::KeyValDict const *dict) -> void {
+    conn.add_callback([](cpp_ami::util::KeyValDict const *dict) -> void {
         std::cout << dict->to_string();
     });
 

@@ -20,7 +20,6 @@ option (CPPAMI_EXAMPLE "Build example" ON)
 # Project dependencies
 # ----------------------------------------------------------------------------------------------------------------------
 include (third_party/fmt.cmake)
-include (third_party/quill.cmake)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Project definition
@@ -36,7 +35,6 @@ target_link_libraries (c++ami
     PUBLIC
         fmt
         pthread
-        quill
         uuid
 )
 
