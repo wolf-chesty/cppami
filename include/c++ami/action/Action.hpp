@@ -10,17 +10,17 @@
 
 namespace cpp_ami::action {
 
-class Action
-    : public util::KeyValDict {
+class Action : public util::KeyValDict {
 public:
     Action() = delete;
     Action(Action const &) = default;
     Action(Action &&) noexcept = default;
-    explicit Action(std::string action, std::vector<std::string> ordered_keys = {});
+    explicit Action(std::string action, std::vector<std::string> ordered_keys = {},
+                    std::unordered_set<std::string> optional_keys = {});
     ~Action() override = default;
 
-    Action& operator=(Action const &) = default;
-    Action& operator=(Action &&) noexcept = default;
+    Action &operator=(Action const &) = default;
+    Action &operator=(Action &&) noexcept = default;
 
     static std::string create_uuid();
 
@@ -34,6 +34,6 @@ private:
     std::string action_id_;
 };
 
-}
+} // namespace cpp_ami::action
 
 #endif

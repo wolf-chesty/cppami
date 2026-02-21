@@ -9,8 +9,8 @@
 
 using namespace cpp_ami::action;
 
-Action::Action(std::string action, std::vector<std::string> ordered_keys)
-    : KeyValDict(std::move(ordered_keys))
+Action::Action(std::string action, std::vector<std::string> ordered_keys, std::unordered_set<std::string> optional_keys)
+    : KeyValDict(std::move(ordered_keys), std::move(optional_keys))
     , action_(std::move(action))
     , action_id_(create_uuid())
 {

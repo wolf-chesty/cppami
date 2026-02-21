@@ -7,6 +7,7 @@
 #include <optional>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 namespace cpp_ami::util {
@@ -33,7 +34,7 @@ public:
     /// @brief Constructs an object containing keys \c ordered_keys.
     ///
     /// @param ordered_keys Ordered keys for the object.
-    explicit KeyValDict(std::vector<std::string> ordered_keys);
+    explicit KeyValDict(std::vector<std::string> ordered_keys, std::unordered_set<std::string> optional_keys = {});
 
     virtual ~KeyValDict() = default;
 
@@ -52,14 +53,14 @@ public:
     /// @return Value for key \c key.
     ///
     /// @param key Key to return value for.
-    std::string& operator[](std::string const &key);
+    std::string &operator[](std::string const &key);
 
     /// @brief Returns the value for \c key in the collection.
     ///
     /// @return Value for key \c key.
     ///
     /// @param key Key to return value for.
-    std::string const& operator[](std::string const &key) const;
+    std::string const &operator[](std::string const &key) const;
 
     /// @brief Returns the value for \c key in the collection.
     ///
@@ -84,6 +85,11 @@ public:
     /// @return AMI string representation of the object.
     virtual std::string to_string() const;
 
+    /// @brief Returns \c true if the key value is optional for this object.
+    ///
+    /// @return \c true if key is optional for this object.
+    bool is_optional(std::string const &key) const;
+
 protected:
     /// @brief Initializes the object using the key/value pairs found in \c event_buf.
     ///
@@ -91,10 +97,11 @@ protected:
     void set_message(std::string event_buf);
 
 private:
-    std::vector<std::string> ordered_keys_;                 ///< Collection of ordered keys for object.
-    std::unordered_map<std::string, std::string> values_;   ///< Collection of Key/value pairs.
+    std::vector<std::string> ordered_keys_;               ///< Collection of ordered keys for object.
+    std::unordered_set<std::string> optional_keys_;       ///< Optional keys for object.
+    std::unordered_map<std::string, std::string> values_; ///< Collection of Key/value pairs.
 };
 
-}
+} // namespace cpp_ami::util
 
 #endif

@@ -17,9 +17,15 @@ KeyValDict::KeyValDict(std::string event_buf)
     set_message(std::move(event_buf));
 }
 
-KeyValDict::KeyValDict(std::vector<std::string> ordered_keys)
+KeyValDict::KeyValDict(std::vector<std::string> ordered_keys, std::unordered_set<std::string> optional_keys)
     : ordered_keys_(std::move(ordered_keys))
+    , optional_keys_(std::move(optional_keys))
 {
+#ifndef NDEBUG
+    for (auto const &optional_key : optional_keys_) {
+        assert(std::find(ordered_keys_.begin(), ordered_keys_.end(), optional_key) != ordered_keys_.end());
+    }
+#endif
 }
 
 size_t KeyValDict::count() const
@@ -103,7 +109,17 @@ std::string KeyValDict::to_string() const
     std::string action_string;
     for (auto const &key : ordered_keys_) {
         auto const it_val = values_.find(key);
-        action_string += fmt::format("{}{}{}{}", key, SEP, it_val != values_.end() ? it_val->second : std::string{""}, EOR);
+        if (it_val != values_.end()) {
+            action_string += fmt::format("{}{}{}{}", key, SEP, it_val->second, EOR);
+        }
+        else if (!is_optional(key)) {
+            action_string += fmt::format("{}{}{}{}", key, SEP, "", EOR);
+        }
     }
     return action_string + EOR;
+}
+
+bool KeyValDict::is_optional(std::string const &key) const
+{
+    return optional_keys_.find(key) != optional_keys_.end();
 }
