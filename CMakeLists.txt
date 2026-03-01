@@ -51,6 +51,7 @@ target_sources (c++ami
         src/action/Logoff.cpp
         src/action/MailboxCount.cpp
         src/action/MailboxStatus.cpp
+        src/action/MessageSend.cpp
         src/action/Park.cpp
         src/action/ParkedCalls.cpp
         src/action/Parkinglots.cpp
