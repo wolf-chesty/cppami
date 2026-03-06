@@ -16,12 +16,12 @@ BOOST_AUTO_TEST_CASE(dispatch_test)
     using namespace cpp_ami;
 
     action::Park park;
-    park["Channel"] = "channel";
-    park["TimeoutChannel"] = "timeout_channel";
-    park["AnnounceChannel"] = "announce_channel";
-    park["Timeout"] = "timeout";
-    park["Parkinglot"] = "parkinglot";
-    park["ParkingSpace"] = "parkingspace";
+    park["Channel"] = "ama";
+    park["TimeoutChannel"] = "say";
+    park["AnnounceChannel"] = "mama";
+    park["Timeout"] = "sa";
+    park["Parkinglot"] = "mama";
+    park["ParkingSpace"] = "kusa";
 
     EventDispatcher dispatcher([&park](EventDispatcher::event_ptr_t dict) -> void {
         BOOST_CHECK(dict->to_string() == park.to_string());
