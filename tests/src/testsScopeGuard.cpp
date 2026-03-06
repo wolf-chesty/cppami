@@ -5,6 +5,8 @@
 
 #include "c++ami/util/ScopeGuard.hpp"
 
+BOOST_AUTO_TEST_SUITE(cpp_ami_tests)
+
 BOOST_AUTO_TEST_SUITE(scope_guard_tests)
 
 BOOST_AUTO_TEST_CASE(exit_scope_test)
@@ -48,5 +50,7 @@ BOOST_AUTO_TEST_CASE(move_test)
     g.reset();
     BOOST_CHECK(test_cond == false);
 }
+
+BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()

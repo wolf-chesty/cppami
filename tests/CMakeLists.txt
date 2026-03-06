@@ -32,6 +32,11 @@ target_link_libraries (unit_tests
 target_sources (unit_tests
     PRIVATE
         src/main.cpp
-        src/ami_message_tests.cpp
-        src/scope_guard_tests.cpp
+        src/testsAmiMessages.cpp
+        src/testsEventDispatcher.cpp
+        src/testsScopeGuard.cpp
+        src/testsSocketReader.cpp
+        src/testsSocketWriter.cpp
+        src/testsStreamParser.cpp
+        src/testsTcpSocket.cpp
 )

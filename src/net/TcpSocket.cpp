@@ -37,7 +37,7 @@ TcpSocket::~TcpSocket()
 
 int TcpSocket::open(std::string_view hostname, uint16_t port)
 {
-    auto sock_fd = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+    auto sock_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (sock_fd == -1) {
         throw std::runtime_error(fmt::format("Error opening socket: {}", strerror(errno)));
     }
@@ -47,11 +47,6 @@ int TcpSocket::open(std::string_view hostname, uint16_t port)
             ::close(sock_fd);
         }
     });
-
-    constexpr int reuse_on = 1;
-    if (setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, &reuse_on, sizeof(reuse_on)) == -1) {
-        // TODO: issue a warning
-    }
 
     addrinfo hints = {
         .ai_flags = AI_ADDRCONFIG,

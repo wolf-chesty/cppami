@@ -78,16 +78,24 @@ void StreamParser::process_chunk(std::string stream_chunk)
 {
     // The very first event from AMI contains the AMI version; grab it
     if (first_event_) {
-        first_event_ = false;
+        size_t pos = 0;
+        if (event_buf_.empty()) {
+            event_buf_ = std::move(stream_chunk);
+        }
+        else {
+            pos = event_buf_.length() - 1;
+            event_buf_ += stream_chunk;
+            stream_chunk.clear();
+        }
 
-        auto eor_loc = stream_chunk.find(EOR);
-        set_ami_version_(stream_chunk.substr(0, eor_loc));
-
-        eor_loc += 2;
-        if (stream_chunk.length() == eor_loc) {
+        auto const eor_loc = event_buf_.find(EOR, pos);
+        if (eor_loc == std::string::npos) {
             return;
         }
-        stream_chunk.erase(0, eor_loc);
+        set_ami_version_(event_buf_.substr(0, eor_loc));
+        event_buf_.erase(0, eor_loc + 2);
+
+        first_event_ = false;
     }
 
     // Start parsing events
@@ -107,7 +115,7 @@ void StreamParser::process_chunk(std::string stream_chunk)
         // event_buf.
         auto const scan_pos_start = event_buf_.length() < EOM.length()
             ? 0                                         // Beginning of event_buf
-            : event_buf_.length() - EOM.length() + 1;  // EOM length - 1 byte before the chunk boundary
+            : event_buf_.length() - EOM.length() + 1;   // EOM length - 1 byte before the chunk boundary
 
         event_buf_ += stream_chunk;
         eom_loc = event_buf_.find(EOM, scan_pos_start);

@@ -5,6 +5,8 @@
 
 #include "c++ami/util/KeyValDict.hpp"
 
+BOOST_AUTO_TEST_SUITE(cpp_ami_tests)
+
 BOOST_AUTO_TEST_SUITE(ami_message_tests)
 
 BOOST_AUTO_TEST_CASE(message_parse_test)
@@ -14,5 +16,7 @@ BOOST_AUTO_TEST_CASE(message_parse_test)
     cpp_ami::util::KeyValDict ami_msg(msg);
     BOOST_CHECK(msg == ami_msg.to_string());
 }
+
+BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()
