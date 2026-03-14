@@ -1,15 +1,11 @@
 // Copyright (c) 2026 Christopher L Walker
 // SPDX-License-Identifier: MIT
 
-#include <boost/test/unit_test.hpp>
+#include <gtest/gtest.h>
 
 #include "c++ami/util/ScopeGuard.hpp"
 
-BOOST_AUTO_TEST_SUITE(cpp_ami_tests)
-
-BOOST_AUTO_TEST_SUITE(scope_guard_tests)
-
-BOOST_AUTO_TEST_CASE(exit_scope_test)
+TEST(scope_guard, exit_scope_test)
 {
     bool test_cond = true;
 
@@ -19,10 +15,10 @@ BOOST_AUTO_TEST_CASE(exit_scope_test)
         });
     }
 
-    BOOST_CHECK(test_cond == false);
+    EXPECT_EQ(test_cond, false);
 }
 
-BOOST_AUTO_TEST_CASE(in_scope_test)
+TEST(scope_guard, in_scope_test)
 {
     bool test_cond = true;
 
@@ -30,10 +26,10 @@ BOOST_AUTO_TEST_CASE(in_scope_test)
         test_cond = false;
     });
 
-    BOOST_CHECK(test_cond == true);
+    EXPECT_EQ(test_cond, true);
 }
 
-BOOST_AUTO_TEST_CASE(move_test)
+TEST(scope_guard, move_test)
 {
     bool test_cond = true;
     std::unique_ptr<cpp_ami::util::ScopeGuard> g;
@@ -45,12 +41,8 @@ BOOST_AUTO_TEST_CASE(move_test)
 
         g = std::make_unique<cpp_ami::util::ScopeGuard>(std::move(guard));
     }
-    BOOST_CHECK(test_cond == true);
+    EXPECT_EQ(test_cond, true);
 
     g.reset();
-    BOOST_CHECK(test_cond == false);
+    EXPECT_EQ(test_cond, false);
 }
-
-BOOST_AUTO_TEST_SUITE_END()
-
-BOOST_AUTO_TEST_SUITE_END()

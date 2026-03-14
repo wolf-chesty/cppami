@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Christopher L Walker
 // SPDX-License-Identifier: MIT
 
-#include <boost/test/unit_test.hpp>
+#include <gtest/gtest.h>
 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -11,11 +11,7 @@
 #include <future>
 #include <thread>
 
-BOOST_AUTO_TEST_SUITE(cpp_ami_tests)
-
-BOOST_AUTO_TEST_SUITE(socket_tests)
-
-BOOST_AUTO_TEST_CASE(tcp_write_test)
+TEST(tcp_socket, write_test)
 {
     using namespace std::chrono_literals;
     using namespace cpp_ami;
@@ -23,15 +19,16 @@ BOOST_AUTO_TEST_CASE(tcp_write_test)
     std::promise<void> server_promise;
     auto server_future = server_promise.get_future();
 
-    uint16_t const port = 9999;
-    std::thread server_thread([server_promise = std::move(server_promise), port]() mutable -> void {
+    uint16_t const port{9999};
+    std::string value{"Ping 9876543210"};
+    std::thread server_thread([server_promise = std::move(server_promise), port, &value]() mutable -> void {
         auto server_fd = socket(AF_INET, SOCK_STREAM, 0);
-        BOOST_CHECK(server_fd > 0);
+        EXPECT_GT(server_fd, 0);
         util::ScopeGuard scope_fd_guard([server_fd]() -> void { close(server_fd); });
 
         int opt = 1;
         auto ret = setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
-        BOOST_CHECK(ret == 0);
+        EXPECT_EQ(ret, 0);
 
         sockaddr_in address{0};
         address.sin_family = AF_INET;
@@ -39,30 +36,30 @@ BOOST_AUTO_TEST_CASE(tcp_write_test)
         address.sin_port = htons(port);
 
         ret = bind(server_fd, reinterpret_cast<sockaddr*>(&address), sizeof(address));
-        BOOST_CHECK(ret >= 0);
+        EXPECT_GE(ret, 0);
 
         ret = listen(server_fd, 3);
-        BOOST_CHECK(ret >= 0);
+        EXPECT_GE(ret, 0);
 
         int addrlen = sizeof(address);
         server_promise.set_value();
         auto new_socket = accept(server_fd, reinterpret_cast<sockaddr*>(&address), reinterpret_cast<socklen_t*>(&addrlen));
-        BOOST_CHECK(new_socket >= 0);
+        EXPECT_GE(new_socket, 0);
         util::ScopeGuard socket_guard([new_socket]() -> void { close(new_socket); });
 
         char ping[1024] = {0};
         read(new_socket, ping,  sizeof(ping));
-        BOOST_CHECK((std::string("Ping 9876543210") == ping));
+        EXPECT_EQ(ping, value);
     });
 
     server_future.get();
     net::TcpSocket sock("127.0.0.1", port);
-    sock.write("Ping 9876543210");
+    sock.write(value);
 
     server_thread.join();
 }
 
-BOOST_AUTO_TEST_CASE(tcp_read_test)
+TEST(tcp_socket, read_test)
 {
     using namespace std::chrono_literals;
     using namespace cpp_ami;
@@ -70,15 +67,16 @@ BOOST_AUTO_TEST_CASE(tcp_read_test)
     std::promise<void> server_promise;
     auto server_future = server_promise.get_future();
 
-    uint16_t const port = 9999;
-    std::thread server_thread([server_promise = std::move(server_promise), port]() mutable -> void {
+    uint16_t const port{9999};
+    std::string value{"Pong 0123456789"};
+    std::thread server_thread([server_promise = std::move(server_promise), ping = value.c_str()]() mutable -> void {
         auto server_fd = socket(AF_INET, SOCK_STREAM, 0);
-        BOOST_CHECK(server_fd > 0);
+        EXPECT_GT(server_fd, 0);
         util::ScopeGuard scope_fd_guard([server_fd]() -> void { close(server_fd); });
 
         int opt = 1;
         auto ret = setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
-        BOOST_CHECK(ret == 0);
+        EXPECT_EQ(ret, 0);
 
         sockaddr_in address{0};
         address.sin_family = AF_INET;
@@ -86,29 +84,28 @@ BOOST_AUTO_TEST_CASE(tcp_read_test)
         address.sin_port = htons(port);
 
         ret = bind(server_fd, reinterpret_cast<sockaddr*>(&address), sizeof(address));
-        BOOST_CHECK(ret >= 0);
+        EXPECT_GE(ret, 0);
 
         ret = listen(server_fd, 3);
-        BOOST_CHECK(ret >= 0);
+        EXPECT_GE(ret, 0);
 
         int addrlen = sizeof(address);
         server_promise.set_value();
         auto new_socket = accept(server_fd, reinterpret_cast<sockaddr*>(&address), reinterpret_cast<socklen_t*>(&addrlen));
-        BOOST_CHECK(new_socket >= 0);
+        EXPECT_GE(new_socket, 0);
         util::ScopeGuard socket_guard([new_socket]() -> void { close(new_socket); });
 
-        char ping[] = "Pong 0123456789";
         send(new_socket, ping,  strlen(ping), 0);
     });
 
     server_future.get();
     net::TcpSocket sock("127.0.0.1", port);
-    BOOST_CHECK(sock.read() == "Pong 0123456789");
+    EXPECT_EQ(sock.read(), value);
 
     server_thread.join();
 }
 
-BOOST_AUTO_TEST_CASE(tcp_read_write_test)
+TEST(tcp_socket, read_write_test)
 {
     using namespace std::chrono_literals;
     using namespace cpp_ami;
@@ -116,15 +113,19 @@ BOOST_AUTO_TEST_CASE(tcp_read_write_test)
     std::promise<void> server_promise;
     auto server_future = server_promise.get_future();
 
-    uint16_t const port = 9999;
-    std::thread server_thread([server_promise = std::move(server_promise), port]() mutable -> void {
+    std::string hostname{"127.0.0.1"};
+    uint16_t const port{9999};
+    std::string const ping{"Ping 9876543210"};
+    std::string const pong{"Pong 0123456789"};
+
+    std::thread server_thread([server_promise = std::move(server_promise), &ping, &pong]() mutable -> void {
         auto server_fd = socket(AF_INET, SOCK_STREAM, 0);
-        BOOST_CHECK(server_fd > 0);
+        EXPECT_GT(server_fd, 0);
         util::ScopeGuard scope_fd_guard([server_fd]() -> void { close(server_fd); });
 
         int opt = 1;
         auto ret = setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
-        BOOST_CHECK(ret == 0);
+        EXPECT_EQ(ret, 0);
 
         sockaddr_in address{0};
         address.sin_family = AF_INET;
@@ -132,33 +133,28 @@ BOOST_AUTO_TEST_CASE(tcp_read_write_test)
         address.sin_port = htons(port);
 
         ret = bind(server_fd, reinterpret_cast<sockaddr*>(&address), sizeof(address));
-        BOOST_CHECK(ret >= 0);
+        EXPECT_GE(ret, 0);
 
         ret = listen(server_fd, 3);
-        BOOST_CHECK(ret >= 0);
+        EXPECT_GE(ret, 0);
 
         int addrlen = sizeof(address);
         server_promise.set_value();
         auto new_socket = accept(server_fd, reinterpret_cast<sockaddr*>(&address), reinterpret_cast<socklen_t*>(&addrlen));
-        BOOST_CHECK(new_socket >= 0);
+        EXPECT_GE(new_socket, 0);
         util::ScopeGuard socket_guard([new_socket]() -> void { close(new_socket); });
 
-        char ping[1024] = {0};
-        read(new_socket, ping,  sizeof(ping));
-        BOOST_CHECK((std::string("Ping 9876543210") == ping));
+        char val[1024] = {0};
+        read(new_socket, val,  sizeof(val));
+        EXPECT_EQ(ping, std::string(val));
 
-        char pong[] = "Pong 0123456789";
-        send(new_socket, pong,  strlen(pong), 0);
+        send(new_socket, pong.c_str(),  pong.length(), 0);
     });
 
     server_future.get();
-    net::TcpSocket sock("127.0.0.1", port);
-    sock.write("Ping 9876543210");
-    BOOST_CHECK(sock.read() == "Pong 0123456789");
+    net::TcpSocket sock(hostname, port);
+    sock.write(ping);
+    EXPECT_EQ(sock.read(), pong);
 
     server_thread.join();
 }
-
-BOOST_AUTO_TEST_SUITE_END()
-
-BOOST_AUTO_TEST_SUITE_END()

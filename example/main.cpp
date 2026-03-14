@@ -26,7 +26,7 @@ int main()
     cpp_ami::Connection conn("10.3.29.93");
 
     conn.addCallback([](cpp_ami::util::KeyValDict const *dict) -> void {
-        std::cout << dict->to_string();
+        std::cout << dict->toString();
     });
 
     cpp_ami::action::Login login("admin", "test");
@@ -34,19 +34,19 @@ int main()
     login["Events"] = "off";
 
     if (auto reaction = conn.invoke(login); reaction->isSuccess()) {
-        std::cout << login.to_string() << reaction->to_string();
+        std::cout << login.toString() << reaction->toString();
 
         cpp_ami::action::Events events;
         reaction = conn.invoke(events);
         events["EventMask"] = "off";
-        std::cout << events.to_string() << reaction->to_string();
+        std::cout << events.toString() << reaction->toString();
 
         std::atomic<bool> run = true;
         std::thread ping_thread([&run, &conn]() -> void {
             while (run) {
                 cpp_ami::action::Ping const ping;
                 auto response = conn.invoke(ping);
-                std::cout << ping.to_string() << response->to_string();
+                std::cout << ping.toString() << response->toString();
 
                 std::this_thread::sleep_for(std::chrono::seconds(5));
             }
@@ -54,41 +54,41 @@ int main()
 
         cpp_ami::action::ListCommands const list_commands;
         reaction = conn.invoke(list_commands);
-        std::cout << list_commands.to_string() << reaction->to_string();
+        std::cout << list_commands.toString() << reaction->toString();
         conn.asyncInvoke(list_commands);
 
         cpp_ami::action::Parkinglots const parking_lots;
         reaction = conn.invoke(parking_lots);
-        std::cout << parking_lots.to_string() << reaction->to_string();
+        std::cout << parking_lots.toString() << reaction->toString();
 
         cpp_ami::action::ExtensionState ext_state;
         ext_state["Exten"] = "701@parkedcalls";
-        std::cout << ext_state.to_string() << reaction->to_string();
+        std::cout << ext_state.toString() << reaction->toString();
 
         cpp_ami::action::ParkedCalls const parked_calls;
         reaction = conn.invoke(parked_calls);
-        std::cout << parked_calls.to_string() << reaction->to_string();
+        std::cout << parked_calls.toString() << reaction->toString();
 
         cpp_ami::action::MailboxStatus const mailbox_status("5558675309");
         reaction = conn.invoke(mailbox_status);
-        std::cout << mailbox_status.to_string() << reaction->to_string();
+        std::cout << mailbox_status.toString() << reaction->toString();
 
         cpp_ami::action::MailboxCount const mailbox_count("5558675309");
         reaction = conn.invoke(mailbox_count);
-        std::cout << mailbox_count.to_string() << reaction->to_string();
+        std::cout << mailbox_count.toString() << reaction->toString();
 
         cpp_ami::action::VoicemailBoxSummary const vm_summary("default", "5558675309");
         reaction = conn.invoke(vm_summary);
         assert(dynamic_cast<cpp_ami::reaction::EventList const *>(reaction.get()));
-        std::cout << vm_summary.to_string() << reaction->to_string();
+        std::cout << vm_summary.toString() << reaction->toString();
 
         cpp_ami::action::VoicemailRefresh const vm_refresh;
         reaction = conn.invoke(vm_refresh);
-        std::cout << vm_refresh.to_string() << reaction->to_string();
+        std::cout << vm_refresh.toString() << reaction->toString();
 
         cpp_ami::action::DeviceStateList const device_state_list;
         reaction = conn.invoke(device_state_list);
-        std::cout << device_state_list.to_string() << reaction->to_string();
+        std::cout << device_state_list.toString() << reaction->toString();
 
         std::this_thread::sleep_for(std::chrono::seconds(30));
 
@@ -97,7 +97,7 @@ int main()
 
         cpp_ami::action::Logoff logoff;
         reaction = conn.invoke(logoff);
-        std::cout << logoff.to_string() << reaction->to_string();
+        std::cout << logoff.toString() << reaction->toString();
     }
     else {
         std::cout << "Unable to login\n";

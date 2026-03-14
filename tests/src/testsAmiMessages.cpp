@@ -1,22 +1,14 @@
 // Copyright (c) 2026 Christopher L Walker
 // SPDX-License-Identifier: MIT
 
-#include <boost/test/unit_test.hpp>
+#include <gtest/gtest.h>
 
 #include "c++ami/util/KeyValDict.hpp"
 
-BOOST_AUTO_TEST_SUITE(cpp_ami_tests)
-
-BOOST_AUTO_TEST_SUITE(ami_message_tests)
-
-BOOST_AUTO_TEST_CASE(message_parse_test)
+TEST(ami_message, message_parse_test)
 {
     std::string const msg("a: b\r\nc: d\r\ne: f\r\n\r\n");
 
     cpp_ami::util::KeyValDict ami_msg(msg);
-    BOOST_CHECK(msg == ami_msg.toString());
+    EXPECT_EQ(msg, ami_msg.toString());
 }
-
-BOOST_AUTO_TEST_SUITE_END()
-
-BOOST_AUTO_TEST_SUITE_END()

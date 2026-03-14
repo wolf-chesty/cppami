@@ -8,12 +8,10 @@ project (c++ami VERSION 0.0.0.0 LANGUAGES CXX C)
 # ----------------------------------------------------------------------------------------------------------------------
 # Options
 # ----------------------------------------------------------------------------------------------------------------------
+option (CPPAMI_COVERAGE "Enable GCC Coverage" OFF)
 option (CPPAMI_SANITIZE_ADDRESS "Enable AddressSanitizer (ASan) for memory error detection tests." OFF)
-
 option (CPPAMI_SANITIZE_THREAD "Enable ThreadSanitizer (TSan) for detecting thread-related issues." OFF)
-
-option (CPPAMI_UNIT_TESTS "Build unit tests" ON)
-
+option (CPPAMI_BUILD_TESTS "Build unit tests" ON)
 option (CPPAMI_EXAMPLE "Build example" ON)
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -77,15 +75,20 @@ target_sources (c++ami
         src/StreamParser.cpp
 )
 
-if (CPPAMI_SANITIZE_ADDRESS)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address,undefined -fno-omit-frame-pointer -g")
+if (CPPAMI_COVERAGE)
+    target_compile_options (dbpool PRIVATE -O0 --coverage -g)
+    target_link_options (dbpool PRIVATE --coverage)
+    target_link_libraries (dbpool PRIVATE gcov)
+elseif (CPPAMI_SANITIZE_ADDRESS)
+    target_compile_options (dbpool PRIVATE -fsanitize=address,undefined -fno-omit-frame-pointer -g)
+    target_link_options (dbpool PRIVATE -fsanitize=address,undefined)
+elseif (CPPAMI_SANITIZE_THREAD)
+    target_compile_options (dbpool PRIVATE -fsanitize=thread -fno-omit-frame-pointer -g)
+    target_link_options (dbpool PRIVATE -fsanitize=thread)
 endif ()
 
-if (CPPAMI_SANITIZE_THREAD)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=thread -fno-omit-frame-pointer -g")
-endif ()
-
-if (CPPAMI_UNIT_TESTS)
+if (CPPAMI_BUILD_TESTS)
+    include (third_party/googletest.cmake)
     add_subdirectory (tests)
 endif ()
 
