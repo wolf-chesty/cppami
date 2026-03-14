@@ -15,6 +15,6 @@ Login::Login()
 Login::Login(std::string username, std::string secret)
     : Login()
 {
-    set_value("Username", std::move(username));
-    set_value("Secret", std::move(secret));
+    setValue("Username", std::move(username));
+    setValue("Secret", std::move(secret));
 }

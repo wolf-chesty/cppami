@@ -22,12 +22,12 @@ public:
     Action &operator=(Action const &) = default;
     Action &operator=(Action &&) noexcept = default;
 
-    static std::string create_uuid();
+    static std::string createUuid();
 
-    std::string get_action() const;
-    std::string get_action_id() const;
+    std::string getAction() const;
+    std::string getActionId() const;
 
-    std::string to_string() const override;
+    std::string toString() const override;
 
 private:
     std::string action_;

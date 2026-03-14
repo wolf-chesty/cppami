@@ -24,10 +24,10 @@ BOOST_AUTO_TEST_CASE(dispatch_test)
     park["ParkingSpace"] = "kusa";
 
     EventDispatcher dispatcher([&park](EventDispatcher::event_ptr_t dict) -> void {
-        BOOST_CHECK(dict->to_string() == park.to_string());
+        BOOST_CHECK(dict->toString() == park.toString());
     });
 
-    dispatcher.add_event(park.to_string());
+    dispatcher.addEvent(park.toString());
 }
 
 BOOST_AUTO_TEST_SUITE_END()

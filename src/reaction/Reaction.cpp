@@ -5,7 +5,7 @@
 
 using namespace cpp_ami::reaction;
 
-bool Reaction::is_success(std::string const &status)
+bool Reaction::isSuccess(std::string const &status)
 {
     return status == "Success" || status == "Goodbye";
 }

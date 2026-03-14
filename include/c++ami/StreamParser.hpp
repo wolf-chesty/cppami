@@ -47,17 +47,17 @@ public:
     /// @brief Adds a buffer sequence read from the socket to the list of buffer chunks to process.
     ///
     /// @param buf String sequence read from a socket connected to AMI.
-    void add_buf(std::string buf);
+    void addBuf(std::string buf);
 
 private:
     /// @brief Starts the worker thread.
-    void start_work_thread();
+    void startWorkThread();
 
     /// @brief Stops the worker thread.
-    void stop_work_thread();
+    void stopWorkThread();
 
     /// @brief Worker thread that will process all stream chunks creating AMI events messages for dispatch.
-    void work_thread();
+    void workThread();
 
     /// @brief Evaluates \c stream_chunk and determines if it contains an entire AMI event message or is part
     ///        of an AMI message.
@@ -69,7 +69,7 @@ private:
     /// AMI message \c stream_chunk is appended onto a working event buffer. When it is determined that the
     /// event buffer contains an entire event message the event buffer is dispatched and further message chunks
     /// are evaluated.
-    void process_chunk(std::string stream_chunk);
+    void processChunk(std::string stream_chunk);
 
     bool first_event_{ true };      ///< Flag indicating if a received chunk is the first message part. The first message will contain the AMI version string.
     std::string event_buf_;         ///< Working event buffer. Partial AMI events are concatenated to this string to build up a complete message.

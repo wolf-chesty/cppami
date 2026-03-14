@@ -10,10 +10,10 @@ Event::Event(KeyValDict dict) noexcept
 {
 }
 
-bool Event::is_success() const
+bool Event::isSuccess() const
 {
-    if (auto const response = get_value("Response")) {
-        return Reaction::is_success(*response);
+    if (auto const response = getValue("Response")) {
+        return Reaction::isSuccess(*response);
     }
 
     // If the event doesn't have a Response field then it's an event that comes after the first event  in an EventList
@@ -22,7 +22,7 @@ bool Event::is_success() const
     return true;
 }
 
-std::string Event::to_string() const
+std::string Event::toString() const
 {
-    return KeyValDict::to_string();
+    return KeyValDict::toString();
 }

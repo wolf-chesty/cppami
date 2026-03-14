@@ -14,7 +14,7 @@ using namespace cpp_ami::util;
 
 KeyValDict::KeyValDict(std::string event_buf)
 {
-    set_message(std::move(event_buf));
+    setMessage(std::move(event_buf));
 }
 
 KeyValDict::KeyValDict(std::vector<std::string> ordered_keys, std::unordered_set<std::string> optional_keys)
@@ -33,14 +33,14 @@ size_t KeyValDict::count() const
     return ordered_keys_.size();
 }
 
-bool KeyValDict::has_key(std::string const &key) const
+bool KeyValDict::hasKey(std::string const &key) const
 {
     return std::find(ordered_keys_.begin(), ordered_keys_.end(), key) != ordered_keys_.end();
 }
 
 std::string& KeyValDict::operator[](std::string const &key)
 {
-    if (!has_key(key)) {
+    if (!hasKey(key)) {
         throw std::runtime_error(fmt::format("unknown key {}", key));
     }
     return values_[key];
@@ -48,7 +48,7 @@ std::string& KeyValDict::operator[](std::string const &key)
 
 std::string const& KeyValDict::operator[](std::string const &key) const
 {
-    if (!has_key(key)) {
+    if (!hasKey(key)) {
         throw std::runtime_error(fmt::format("unknown key {}", key));
     }
 
@@ -60,7 +60,7 @@ std::string const& KeyValDict::operator[](std::string const &key) const
     return empty_string;
 }
 
-std::optional<std::string> KeyValDict::get_value(std::string const &key) const
+std::optional<std::string> KeyValDict::getValue(std::string const &key) const
 {
     if (auto const it = values_.find(key); it != values_.end()) {
         return std::optional(it->second);
@@ -68,15 +68,15 @@ std::optional<std::string> KeyValDict::get_value(std::string const &key) const
     return std::nullopt;
 }
 
-void KeyValDict::set_value(std::string const &key, std::string val)
+void KeyValDict::setValue(std::string const &key, std::string val)
 {
-    if (!has_key(key)) {
+    if (!hasKey(key)) {
         throw std::runtime_error(fmt::format("unknown key {}", key));
     }
     values_[key] = std::move(val);
 }
 
-void KeyValDict::set_message(std::string event_buf)
+void KeyValDict::setMessage(std::string event_buf)
 {
     assert(!event_buf.empty());
 
@@ -104,7 +104,7 @@ void KeyValDict::set_message(std::string event_buf)
     }
 }
 
-std::string KeyValDict::to_string() const
+std::string KeyValDict::toString() const
 {
     std::string action_string;
     for (auto const &key : ordered_keys_) {
@@ -112,14 +112,14 @@ std::string KeyValDict::to_string() const
         if (it_val != values_.end()) {
             action_string += fmt::format("{}{}{}{}", key, SEP, it_val->second, EOR);
         }
-        else if (!is_optional(key)) {
+        else if (!isOptional(key)) {
             action_string += fmt::format("{}{}{}{}", key, SEP, "", EOR);
         }
     }
     return action_string + EOR;
 }
 
-bool KeyValDict::is_optional(std::string const &key) const
+bool KeyValDict::isOptional(std::string const &key) const
 {
     return optional_keys_.find(key) != optional_keys_.end();
 }

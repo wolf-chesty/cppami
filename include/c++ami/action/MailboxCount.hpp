@@ -11,7 +11,7 @@ namespace cpp_ami::action {
 class MailboxCount
     : public Action {
 public:
-    MailboxCount(std::string mailbox);
+    explicit MailboxCount(std::string mailbox);
 };
 
 }

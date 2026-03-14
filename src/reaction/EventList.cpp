@@ -32,20 +32,20 @@ EventList &EventList::operator=(EventList const &right)
     return *this;
 }
 
-bool EventList::is_success() const
+bool EventList::isSuccess() const
 {
-    auto const response = head_.get_value("Response");
-    return response && Reaction::is_success(*response);
+    auto const response = head_.getValue("Response");
+    return response && Reaction::isSuccess(*response);
 }
 
-bool EventList::is_list_complete(std::string const &event_list_val)
+bool EventList::isListComplete(std::string const &event_list_val)
 {
     return event_list_val == "Complete" || event_list_val == "cancelled";
 }
 
-bool EventList::add_event(event::Event event)
+bool EventList::addEvent(event::Event event)
 {
-    if (auto const val = event.get_value("EventList"); val && is_list_complete(*val)) {
+    if (auto const val = event.getValue("EventList"); val && isListComplete(*val)) {
         tail_ = std::make_unique<event::Event>(std::move(event));
         return true;
     }
@@ -54,29 +54,29 @@ bool EventList::add_event(event::Event event)
     return false;
 }
 
-bool EventList::add_event(util::KeyValDict dict)
+bool EventList::addEvent(util::KeyValDict dict)
 {
-    return add_event(event::Event(std::move(dict)));
+    return addEvent(event::Event(std::move(dict)));
 }
 
-std::string EventList::to_string() const
+std::string EventList::toString() const
 {
-    std::string result = head_.to_string();
+    std::string result = head_.toString();
     for (auto const &event : events_) {
-        result += event.to_string();
+        result += event.toString();
     }
     if (tail_) {
-        result += tail_->to_string();
+        result += tail_->toString();
     }
     return result;
 }
 
-size_t EventList::event_count() const
+size_t EventList::eventCount() const
 {
     return events_.size();
 }
 
-cpp_ami::event::Event const& EventList::get_event(size_t event_idx) const
+cpp_ami::event::Event const& EventList::getEvent(size_t event_idx) const
 {
     assert(event_idx < events_.size());
     return events_[event_idx];

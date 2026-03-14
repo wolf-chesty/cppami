@@ -8,6 +8,6 @@ using namespace cpp_ami::action;
 VoicemailBoxSummary::VoicemailBoxSummary(std::string context, std::string mailbox)
     : Action("VoicemailBoxSummary", { "Context", "Mailbox" })
 {
-    set_value("Context", std::move(context));
-    set_value("Mailbox", std::move(mailbox));
+    setValue("Context", std::move(context));
+    setValue("Mailbox", std::move(mailbox));
 }

@@ -8,5 +8,5 @@ using namespace cpp_ami::action;
 Challenge::Challenge()
     : Action("Challenge", { "AuthType" })
 {
-    set_value("AuthType", "MD5");
+    setValue("AuthType", "MD5");
 }

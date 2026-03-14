@@ -28,12 +28,12 @@ public:
     /// @brief Checks the Status field of the message and returns \c true if the field has a success value.
     ///
     /// @return \c true if the Status field has a success value.
-    virtual bool is_success() const = 0;
+    virtual bool isSuccess() const = 0;
 
     /// @brief Returns a string containing the KeyValDict representation of the data for this object.
     ///
     /// @return String representation of the data for this object.
-    virtual std::string to_string() const = 0;
+    virtual std::string toString() const = 0;
 
 protected:
     /// @brief Returns \c true if \c status contains values indicating that the AMI action completed successfully.
@@ -41,7 +41,7 @@ protected:
     /// @return \c true if \c status contains a value indicating that the AMI action was successful.
     ///
     /// @param status String value containing the Status field for this object.
-    static bool is_success(std::string const &status);
+    static bool isSuccess(std::string const &status);
 };
 
 }

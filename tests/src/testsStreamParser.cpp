@@ -28,13 +28,13 @@ BOOST_AUTO_TEST_CASE(byte_message_test)
     StreamParser parser(version_handler, message_handler);
 
     for (auto const &part : expected_version) {
-        parser.add_buf(std::string(1, part));
+        parser.addBuf(std::string(1, part));
     }
-    parser.add_buf("\r");
-    parser.add_buf("\n");
+    parser.addBuf("\r");
+    parser.addBuf("\n");
 
     for (auto const &part : expected_message) {
-        parser.add_buf(std::string(1, part));
+        parser.addBuf(std::string(1, part));
     }
 }
 
@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(whole_message_test)
     };
 
     StreamParser parser(version_handler, message_handler);
-    parser.add_buf(expected_version + "\r\n" + expected_message);
+    parser.addBuf(expected_version + "\r\n" + expected_message);
 }
 
 BOOST_AUTO_TEST_CASE(straddle_message_test)
@@ -71,12 +71,12 @@ BOOST_AUTO_TEST_CASE(straddle_message_test)
     };
 
     StreamParser parser(version_handler, message_handler);
-    parser.add_buf(expected_version + "\r");
-    parser.add_buf(std::string("\n") + "message 1\r");
-    parser.add_buf(std::string("\n") + "message 2\r");
-    parser.add_buf(std::string("\n") + "message 3\r");
-    parser.add_buf("\n");
-    parser.add_buf("\r\n");
+    parser.addBuf(expected_version + "\r");
+    parser.addBuf(std::string("\n") + "message 1\r");
+    parser.addBuf(std::string("\n") + "message 2\r");
+    parser.addBuf(std::string("\n") + "message 3\r");
+    parser.addBuf("\n");
+    parser.addBuf("\r\n");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

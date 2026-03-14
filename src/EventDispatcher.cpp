@@ -14,17 +14,17 @@ EventDispatcher::EventDispatcher(event_callback_t callback)
 {
     events_.reserve(100);
 
-    start_work_thread();
+    startWorkThread();
 }
 
 EventDispatcher::~EventDispatcher()
 {
-    stop_work_thread();
+    stopWorkThread();
 
-    cleanup_object();
+    cleanupObject();
 }
 
-void EventDispatcher::cleanup_object()
+void EventDispatcher::cleanupObject()
 {
     std::scoped_lock const lock(promise_map_mutex_, event_map_mutex_);
 
@@ -38,17 +38,17 @@ void EventDispatcher::cleanup_object()
     assert(event_map_.empty());
 }
 
-void EventDispatcher::start_work_thread()
+void EventDispatcher::startWorkThread()
 {
     thread_run_ = true;
-    thread_ = std::thread(&EventDispatcher::work_thread, this);
+    thread_ = std::thread(&EventDispatcher::workThread, this);
 
     std::string_view thread_name("ami_dispatcher");
     assert(thread_name.length() <= 16);
     pthread_setname_np(thread_.native_handle(), thread_name.data());
 }
 
-void EventDispatcher::stop_work_thread()
+void EventDispatcher::stopWorkThread()
 {
     thread_run_ = false;
     thread_cv_.notify_one();
@@ -57,7 +57,7 @@ void EventDispatcher::stop_work_thread()
     thread_.join();
 }
 
-void EventDispatcher::work_thread()
+void EventDispatcher::workThread()
 {
     decltype(events_) events;
     events.reserve(events_.capacity());
@@ -69,7 +69,7 @@ void EventDispatcher::work_thread()
         lock.unlock();
 
         for (auto event_buf : events) {
-            dispatch_event(std::move(event_buf));
+            dispatchEvent(std::move(event_buf));
         }
         events.clear();
     }
@@ -77,22 +77,22 @@ void EventDispatcher::work_thread()
     // Finish building events
     std::unique_lock const lock(events_mutex_);
     for (auto event_buf : events_) {
-        dispatch_event(std::move(event_buf));
+        dispatchEvent(std::move(event_buf));
     }
     events_.clear();
 }
 
-void EventDispatcher::dispatch_event(std::string event_buf)
+void EventDispatcher::dispatchEvent(std::string event_buf)
 {
     util::KeyValDict dict(std::move(event_buf));
-    if (auto const action_id = dict.get_value("ActionID"); !action_id || !dispatch_event(action_id.value(), dict)) {
+    if (auto const action_id = dict.getValue("ActionID"); !action_id || !dispatchEvent(action_id.value(), dict)) {
         // Event is either missing the action ID or isn't in response to an AMI action; dispatch a regular
         // event
         dispatch_(std::make_unique<event::Event const>(std::move(dict)));
     }
 }
 
-bool EventDispatcher::dispatch_event(std::string const &action_id, util::KeyValDict &dict)
+bool EventDispatcher::dispatchEvent(std::string const &action_id, util::KeyValDict &dict)
 {
     std::scoped_lock const lock (promise_map_mutex_, event_map_mutex_);
 
@@ -110,12 +110,12 @@ bool EventDispatcher::dispatch_event(std::string const &action_id, util::KeyValD
     // Event is (currently?) not part of an EventList
     if (e_it == event_map_.end()) {
         // Event does not start an EventList; immediately return Event and clear pipe
-        if (!dict.has_key("EventList")) {
+        if (!dict.hasKey("EventList")) {
             pipe.set_value(std::make_unique<reaction::Event const>(std::move(dict)));
             promise_map_.erase(p_it);
         }
         // Event creates EventList; create new EventList and check AMI status
-        else if (auto event_list = std::make_unique<reaction::EventList>(std::move(dict)); event_list->is_success()) {
+        else if (auto event_list = std::make_unique<reaction::EventList>(std::move(dict)); event_list->isSuccess()) {
             event_map_.emplace(action_id, std::move(event_list));
         }
         // EventList creation failed; immediately return EventList and clear pipe
@@ -127,7 +127,7 @@ bool EventDispatcher::dispatch_event(std::string const &action_id, util::KeyValD
     }
 
     // Event is part of an EventList; grab working EventList and append Event
-    if (auto &event_list = e_it->second; event_list->add_event(std::move(dict))) {
+    if (auto &event_list = e_it->second; event_list->addEvent(std::move(dict))) {
         // EventList is complete; return EventList
         pipe.set_value(std::move(event_list));
         // Clear pipe and cached EventList
@@ -138,14 +138,14 @@ bool EventDispatcher::dispatch_event(std::string const &action_id, util::KeyValD
     return true;
 }
 
-void EventDispatcher::add_event(std::string event)
+void EventDispatcher::addEvent(std::string event)
 {
     std::unique_lock const lock(events_mutex_);
     events_.push_back(std::move(event));
     thread_cv_.notify_one();
 }
 
-std::future<EventDispatcher::reaction_ptr_t> EventDispatcher::get_event_pipe(std::string const &action_id)
+std::future<EventDispatcher::reaction_ptr_t> EventDispatcher::getEventPipe(std::string const &action_id)
 {
     // Create new promise/future pair for event return
     pipe_t promise;
@@ -158,7 +158,7 @@ std::future<EventDispatcher::reaction_ptr_t> EventDispatcher::get_event_pipe(std
     return future;
 }
 
-void EventDispatcher::set_exception_on_pipe(std::string const &action_id, std::exception_ptr const &err)
+void EventDispatcher::setExceptionOnPipe(std::string const &action_id, std::exception_ptr const &err)
 {
     std::scoped_lock const lock(promise_map_mutex_, event_map_mutex_);
 
@@ -172,7 +172,7 @@ void EventDispatcher::set_exception_on_pipe(std::string const &action_id, std::e
     event_map_.erase(action_id);
 }
 
-void EventDispatcher::set_null_on_pipe(std::string const &action_id)
+void EventDispatcher::setNullOnPipe(std::string const &action_id)
 {
     std::scoped_lock const lock(promise_map_mutex_, event_map_mutex_);
 

@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_CASE(message_parse_test)
     std::string const msg("a: b\r\nc: d\r\ne: f\r\n\r\n");
 
     cpp_ami::util::KeyValDict ami_msg(msg);
-    BOOST_CHECK(msg == ami_msg.to_string());
+    BOOST_CHECK(msg == ami_msg.toString());
 }
 
 BOOST_AUTO_TEST_SUITE_END()

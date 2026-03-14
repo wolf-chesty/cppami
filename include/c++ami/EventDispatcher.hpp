@@ -73,7 +73,7 @@ public:
     /// @brief Adds a new incoming event to be dispatched.
     ///
     /// @param event New event to dispatch to callers of invoke or to the callback function.
-    void add_event(std::string event);
+    void addEvent(std::string event);
 
     /// @brief Creates a waitable pipe identified by \c action_id.
     ///
@@ -86,7 +86,7 @@ public:
     /// promise/future pipe pair that this object will use to send the response event back on. This allows the client
     /// application to behave in a more synchronous manner since all messages belonging to an action response appear to
     /// be immediately returned from the AMI server at once.
-    [[nodiscard]] std::future<reaction_ptr_t> get_event_pipe(std::string const &action_id);
+    [[nodiscard]] std::future<reaction_ptr_t> getEventPipe(std::string const &action_id);
 
     /// @brief Sets an exception on a pipe.
     ///
@@ -96,39 +96,39 @@ public:
     /// In some instances you may want to force a pipe to close immediately with an error. Invoking this function will
     /// set a future exception on a promise/future pipe and free any memory for cached response events being created.
     ///
-    /// A promise/future pair cannot be destroyed unless promise::set_value or promise::set_exception and future::get
+    /// A promise/future pair cannot be destroyed unless promise::setValue or promise::set_exception and future::get
     /// have been invoked. If these functions haven't been invoked then the application will throw an
     /// std::broken_promise exception upon destruction of either the promise and/or future.
-    void set_exception_on_pipe(std::string const &action_id, std::exception_ptr const &err);
+    void setExceptionOnPipe(std::string const &action_id, std::exception_ptr const &err);
 
     /// @brief Forces a null value through a pipe in order to force it closed.
     ///
     /// @param action_id Action ID of the pipe send a null value through.
     ///
-    /// Much like \c set_exception_on_pipe but sends a nullptr on the promise/future pipe causing the future::get
+    /// Much like \c setExceptionOnPipe but sends a nullptr on the promise/future pipe causing the future::get
     /// function to return immediately.
     ///
     /// This won't raise an exception but the client code invoking future::get will need to check the received value to
     /// be non-null.
-    void set_null_on_pipe(std::string const &action_id);
+    void setNullOnPipe(std::string const &action_id);
 
 private:
     /// @brief Starts the work thread.
-    void start_work_thread();
+    void startWorkThread();
 
     /// @brief Stops the work thread.
-    void stop_work_thread();
+    void stopWorkThread();
 
     /// @brief Work thread for this object.
     ///
     /// This thread is responsible for parsing incoming Events messages and dispatching them to the \c dispatch_
     /// function or returning events via promise/future pipes to awaiting AMI clients.
-    void work_thread();
+    void workThread();
 
     /// @brief Dispatches an AMI message in string format.
     ///
     /// @param event_buf String containing an AMI string event.
-    void dispatch_event(std::string event_buf);
+    void dispatchEvent(std::string event_buf);
 
     /// @brief Dispatches a response event.
     ///
@@ -136,13 +136,13 @@ private:
     ///
     /// @param action_id Action ID for \c dict.
     /// @param dict Collection of key/value pairs that make up the response event.
-    bool dispatch_event(std::string const &action_id, util::KeyValDict &dict);
+    bool dispatchEvent(std::string const &action_id, util::KeyValDict &dict);
 
     /// @brief Cleans up the object on destruction.
     ///
     /// This object iterates through all of the promise pipe ends and sends nullptr through them and closes them. This
     /// function will also free any memory allocated for working multipart response events.
-    void cleanup_object();
+    void cleanupObject();
 
     std::vector<std::string> events_;                           ///< Events received from AMI.
     std::mutex events_mutex_;                                   ///< Mutex controlling access to event collection.

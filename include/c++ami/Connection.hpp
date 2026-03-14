@@ -60,13 +60,13 @@ public:
     /// @brief Returns the AMI server version.
     ///
     /// @return String containing AMI server version.
-    std::string get_ami_version() const;
+    std::string getAmiVersion() const;
 
     /// @brief Sends \c action to the AMI server and immediately returns. The client application will need
     ///        to add callbacks to handle the responding events.
     ///
     /// @param action Action to send to the AMI server.
-    void async_invoke(action::Action const &action) const;
+    void asyncInvoke(action::Action const &action) const;
 
     /// @brief Sends \c action to the AMI server and returns the resulting Event object. This call will block
     ///        indefinitely until all of the event stream is read back from the socket.
@@ -82,24 +82,24 @@ public:
     /// @param timeout Amount of time to wait for the AMI server to fulfill the event request.
     reaction_ptr_t invoke(action::Action const &action, std::chrono::milliseconds const &timeout) const;
 
-    /// @brief Adds an event callback to the collection of callbacks. These callbacks are invoked whenever async_invoke
+    /// @brief Adds an event callback to the collection of callbacks. These callbacks are invoked whenever asyncInvoke
     ///        is invoked or the AMI server is sending events out.
     ///
     /// @return Callback ID.
     ///
     /// @param callback Callback to invoke.
-    event_callback_key_t add_callback(event_callback_t callback);
+    event_callback_key_t addCallback(event_callback_t callback);
 
     /// @brief Removes an event callback from the collection of callbacks.
     ///
     /// @param id ID of callback to remove from the collection of event callbacks.
-    void remove_callback(event_callback_key_t const &id);
+    void removeCallback(event_callback_key_t const &id);
 
 private:
     /// @brief Invokes all event callbacks on \c dict.
     ///
     /// @param dict Event values.
-    void dispatch_handler(EventDispatcher::event_ptr_t dict);
+    void dispatchHandler(EventDispatcher::event_ptr_t dict);
 
     std::string ami_version_;   ///< AMI version.
 

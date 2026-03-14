@@ -46,7 +46,7 @@ public:
     /// @return \c true if a key named \c key exists in the object.
     ///
     /// @param key Key to search for in collection.
-    bool has_key(std::string const &key) const;
+    bool hasKey(std::string const &key) const;
 
     /// @brief Returns the value for \c key in the collection.
     ///
@@ -67,13 +67,13 @@ public:
     /// @return Value for key \c key if key exists. std::nullopt if the value doesn't exist.
     ///
     /// @param key Key to return value for.
-    std::optional<std::string> get_value(std::string const &key) const;
+    std::optional<std::string> getValue(std::string const &key) const;
 
     /// @brief Sets the value for key \c key to value \c val.
     ///
     /// @param key Key to set value for.
     /// @param val Value to set key to.
-    void set_value(std::string const &key, std::string val);
+    void setValue(std::string const &key, std::string val);
 
     /// @brief Returns number of keys in object.
     ///
@@ -83,18 +83,18 @@ public:
     /// @brief Returns an AMI string representation of the object.
     ///
     /// @return AMI string representation of the object.
-    virtual std::string to_string() const;
+    virtual std::string toString() const;
 
     /// @brief Returns \c true if the key value is optional for this object.
     ///
     /// @return \c true if key is optional for this object.
-    bool is_optional(std::string const &key) const;
+    bool isOptional(std::string const &key) const;
 
 protected:
     /// @brief Initializes the object using the key/value pairs found in \c event_buf.
     ///
     /// @param event_buf String containing AMI key/value pairs.
-    void set_message(std::string event_buf);
+    void setMessage(std::string event_buf);
 
 private:
     std::vector<std::string> ordered_keys_;               ///< Collection of ordered keys for object.

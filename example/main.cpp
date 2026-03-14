@@ -25,7 +25,7 @@ int main()
 {
     cpp_ami::Connection conn("10.3.29.93");
 
-    conn.add_callback([](cpp_ami::util::KeyValDict const *dict) -> void {
+    conn.addCallback([](cpp_ami::util::KeyValDict const *dict) -> void {
         std::cout << dict->to_string();
     });
 
@@ -33,7 +33,7 @@ int main()
     login["AuthType"] = "plain";
     login["Events"] = "off";
 
-    if (auto reaction = conn.invoke(login); reaction->is_success()) {
+    if (auto reaction = conn.invoke(login); reaction->isSuccess()) {
         std::cout << login.to_string() << reaction->to_string();
 
         cpp_ami::action::Events events;
@@ -55,7 +55,7 @@ int main()
         cpp_ami::action::ListCommands const list_commands;
         reaction = conn.invoke(list_commands);
         std::cout << list_commands.to_string() << reaction->to_string();
-        conn.async_invoke(list_commands);
+        conn.asyncInvoke(list_commands);
 
         cpp_ami::action::Parkinglots const parking_lots;
         reaction = conn.invoke(parking_lots);

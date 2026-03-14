@@ -14,25 +14,25 @@ SocketReader::SocketReader(socket_ptr_t socket, handler_t callback)
     , socket_(std::move(socket))
 {
     assert(socket_);
-    start_work_thread();
+    startWorkThread();
 }
 
 SocketReader::~SocketReader()
 {
-    stop_work_thread();
+    stopWorkThread();
 }
 
-void SocketReader::start_work_thread()
+void SocketReader::startWorkThread()
 {
     thread_spin_ = true;
-    thread_ = std::thread(&SocketReader::work_thread, this);
+    thread_ = std::thread(&SocketReader::workThread, this);
 
     std::string_view thread_name("ami_reader");
     assert(thread_name.length() <= 16);
     pthread_setname_np(thread_.native_handle(), thread_name.data());
 }
 
-void SocketReader::stop_work_thread()
+void SocketReader::stopWorkThread()
 {
     thread_spin_ = false;
 
@@ -40,7 +40,7 @@ void SocketReader::stop_work_thread()
     thread_.join();
 }
 
-void SocketReader::work_thread() const
+void SocketReader::workThread() const
 {
     while (thread_spin_) {
         if (auto buf = socket_->read(); !buf.empty()) {

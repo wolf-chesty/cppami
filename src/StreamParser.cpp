@@ -14,32 +14,32 @@ StreamParser::StreamParser(version_callback_t version_callback, callback_t callb
 {
     stream_chunks_.reserve(100);
 
-    start_work_thread();
+    startWorkThread();
 }
 
 StreamParser::~StreamParser()
 {
-    stop_work_thread();
+    stopWorkThread();
 }
 
-void StreamParser::add_buf(std::string buf)
+void StreamParser::addBuf(std::string buf)
 {
     std::unique_lock const lock(stream_chunks_mutex_);
     stream_chunks_.push_back(std::move(buf));
     thread_cv_.notify_one();
 }
 
-void StreamParser::start_work_thread()
+void StreamParser::startWorkThread()
 {
     thread_run_ = true;
-    thread_ = std::thread(&StreamParser::work_thread, this);
+    thread_ = std::thread(&StreamParser::workThread, this);
 
     std::string_view thread_name("ami_parser");
     assert(thread_name.length() <= 16);
     pthread_setname_np(thread_.native_handle(), thread_name.data());
 }
 
-void StreamParser::stop_work_thread()
+void StreamParser::stopWorkThread()
 {
     thread_run_ = false;
     thread_cv_.notify_one();
@@ -48,7 +48,7 @@ void StreamParser::stop_work_thread()
     thread_.join();
 }
 
-void StreamParser::work_thread()
+void StreamParser::workThread()
 {
     decltype(stream_chunks_) stream_chunks;
     stream_chunks.reserve(stream_chunks_.capacity());
@@ -62,19 +62,19 @@ void StreamParser::work_thread()
         lock.unlock();
 
         for (auto &stream_chunk : stream_chunks) {
-            process_chunk(std::move(stream_chunk));
+            processChunk(std::move(stream_chunk));
         }
         stream_chunks.clear();
     }
 
     std::unique_lock const lock(stream_chunks_mutex_);
     for (auto &stream_chunk : stream_chunks_) {
-        process_chunk(std::move(stream_chunk));
+        processChunk(std::move(stream_chunk));
     }
     stream_chunks_.clear();
 }
 
-void StreamParser::process_chunk(std::string stream_chunk)
+void StreamParser::processChunk(std::string stream_chunk)
 {
     // The very first event from AMI contains the AMI version; grab it
     if (first_event_) {

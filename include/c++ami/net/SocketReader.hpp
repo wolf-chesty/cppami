@@ -46,14 +46,14 @@ public:
 
 private:
     /// @brief Starts the data reader work thread.
-    void start_work_thread();
+    void startWorkThread();
 
     /// @brief Stops the data reader work thread.
-    void stop_work_thread();
+    void stopWorkThread();
 
     /// @brief Implements the work thread responsible for reading data from the socket and invoking the
     ///        data callback on received data.
-    void work_thread() const;
+    void workThread() const;
 
     handler_t callback_{ [](std::string) -> void { } }; ///< Callback that will be invoked whenever new data as been read from \c m_socket.
 

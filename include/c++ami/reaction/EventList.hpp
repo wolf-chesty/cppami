@@ -51,22 +51,22 @@ public:
     /// @brief Adds \c event to the object.
     ///
     /// @param event Event that is a member of this object.
-    bool add_event(event::Event event);
+    bool addEvent(event::Event event);
 
     /// @brief Adds \c dict data to the object.
     ///
     /// @param dict \c KeyValDict containing data for the new event to add to this object.
-    bool add_event(util::KeyValDict dict);
+    bool addEvent(util::KeyValDict dict);
 
     // cpp_ami::reaction::Reaction interface
-    bool is_success() const override;
-    std::string to_string() const override;
+    bool isSuccess() const override;
+    std::string toString() const override;
 
-    size_t event_count() const;
-    event::Event const& get_event(size_t event_idx) const;
+    size_t eventCount() const;
+    event::Event const& getEvent(size_t event_idx) const;
 
 private:
-    static bool is_list_complete(std::string const &event_list_val);
+    static bool isListComplete(std::string const &event_list_val);
 
     event::Event head_;                    ///< The first event in the AMI events that make up this object.
     std::unique_ptr<event::Event const> tail_;   ///< The last event in the AMI events that make up this object.

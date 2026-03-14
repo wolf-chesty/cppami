@@ -8,5 +8,5 @@ using namespace cpp_ami::action;
 MailboxStatus::MailboxStatus(std::string mailbox)
     : Action("MailboxStatus", { "Mailbox" })
 {
-    set_value("Mailbox", std::move(mailbox));
+    setValue("Mailbox", std::move(mailbox));
 }

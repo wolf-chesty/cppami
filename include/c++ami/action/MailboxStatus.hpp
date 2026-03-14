@@ -11,7 +11,7 @@ namespace cpp_ami::action {
 class MailboxStatus
     : public Action {
 public:
-    MailboxStatus(std::string mailbox);
+    explicit MailboxStatus(std::string mailbox);
 };
 
 }

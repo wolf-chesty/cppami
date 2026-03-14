@@ -38,8 +38,8 @@ public:
     Event& operator=(Event &&) noexcept = default;
 
     // cpp_ami::reaction::Reaction interface
-    bool is_success() const override;
-    std::string to_string() const override;
+    bool isSuccess() const override;
+    std::string toString() const override;
 };
 
 }

@@ -8,5 +8,5 @@ using namespace cpp_ami::action;
 Events::Events()
     : Action("Events", { "EventMask" })
 {
-    set_value("EventMask", "on");
+    setValue("EventMask", "on");
 }

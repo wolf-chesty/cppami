@@ -8,5 +8,5 @@ using namespace cpp_ami::action;
 MailboxCount::MailboxCount(std::string mailbox)
     : Action("MailboxCount", { "Mailbox" })
 {
-    set_value("Mailbox", std::move(mailbox));
+    setValue("Mailbox", std::move(mailbox));
 }

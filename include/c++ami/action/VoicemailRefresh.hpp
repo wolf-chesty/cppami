@@ -11,7 +11,7 @@ namespace cpp_ami::action {
 class VoicemailRefresh
     : public Action {
 public:
-    explicit VoicemailRefresh();
+    VoicemailRefresh();
 };
 
 }
