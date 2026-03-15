@@ -43,6 +43,7 @@ target_sources (c++ami
         src/action/DeviceStateList.cpp
         src/action/Events.cpp
         src/action/ExtensionState.cpp
+        src/action/ExtensionStateList.cpp
         src/action/Getvar.cpp
         src/action/ListCommands.cpp
         src/action/Login.cpp
