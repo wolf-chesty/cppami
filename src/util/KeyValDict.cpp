@@ -38,7 +38,7 @@ bool KeyValDict::hasKey(std::string const &key) const
     return std::find(ordered_keys_.begin(), ordered_keys_.end(), key) != ordered_keys_.end();
 }
 
-std::string& KeyValDict::operator[](std::string const &key)
+std::string &KeyValDict::operator[](std::string const &key)
 {
     if (!hasKey(key)) {
         throw std::runtime_error(fmt::format("unknown key {}", key));
@@ -46,7 +46,7 @@ std::string& KeyValDict::operator[](std::string const &key)
     return values_[key];
 }
 
-std::string const& KeyValDict::operator[](std::string const &key) const
+std::string const &KeyValDict::operator[](std::string const &key) const
 {
     if (!hasKey(key)) {
         throw std::runtime_error(fmt::format("unknown key {}", key));
@@ -83,7 +83,7 @@ void KeyValDict::setMessage(std::string event_buf)
     ordered_keys_.clear();
     values_.clear();
 
-    for (size_t key_beg = 0; key_beg < event_buf.length(); ) {
+    for (size_t key_beg = 0; key_beg < event_buf.length();) {
         auto const key_end = event_buf.find(SEP, key_beg);
         if (key_end == std::string::npos) {
             break;

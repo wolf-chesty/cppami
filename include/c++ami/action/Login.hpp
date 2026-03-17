@@ -8,13 +8,12 @@
 
 namespace cpp_ami::action {
 
-class Login
-    : public Action {
+class Login : public Action {
 public:
     Login();
     explicit Login(std::string username, std::string secret);
 };
 
-}
+} // namespace cpp_ami::action
 
 #endif

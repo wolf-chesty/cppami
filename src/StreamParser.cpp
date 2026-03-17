@@ -113,9 +113,10 @@ void StreamParser::processChunk(std::string stream_chunk)
         // EOM back off amount, this will capture end-of-message sequences that straddle the chunk boundary. If the EOM
         // sequence length is greater than the current event_buf length then just start scanning from the beginning of
         // event_buf.
-        auto const scan_pos_start = event_buf_.length() < EOM.length()
-            ? 0                                         // Beginning of event_buf
-            : event_buf_.length() - EOM.length() + 1;   // EOM length - 1 byte before the chunk boundary
+        auto const scan_pos_start =
+            event_buf_.length() < EOM.length()
+                ? 0                                       // Beginning of event_buf
+                : event_buf_.length() - EOM.length() + 1; // EOM length - 1 byte before the chunk boundary
 
         event_buf_ += stream_chunk;
         eom_loc = event_buf_.find(EOM, scan_pos_start);

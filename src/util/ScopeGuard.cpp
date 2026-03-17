@@ -22,7 +22,7 @@ ScopeGuard::~ScopeGuard()
     callback_();
 }
 
-ScopeGuard& ScopeGuard::operator=(ScopeGuard &&right) noexcept
+ScopeGuard &ScopeGuard::operator=(ScopeGuard &&right) noexcept
 {
     callback_ = std::exchange(right.callback_, []() -> void {});
     return *this;

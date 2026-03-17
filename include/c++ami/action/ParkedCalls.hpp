@@ -8,12 +8,11 @@
 
 namespace cpp_ami::action {
 
-class ParkedCalls
-    : public Action {
+class ParkedCalls : public Action {
 public:
     ParkedCalls();
 };
 
-}
+} // namespace cpp_ami::action
 
 #endif

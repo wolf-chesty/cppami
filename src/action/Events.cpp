@@ -6,7 +6,7 @@
 using namespace cpp_ami::action;
 
 Events::Events()
-    : Action("Events", { "EventMask" })
+    : Action("Events", {"EventMask"})
 {
     setValue("EventMask", "on");
 }

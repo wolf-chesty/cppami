@@ -18,8 +18,7 @@ namespace cpp_ami::reaction {
 /// object.
 class Event
     : public Reaction
-    , public util::KeyValDict
-{
+    , public util::KeyValDict {
 public:
     Event() = delete;
     Event(Event const &) = default;
@@ -32,14 +31,14 @@ public:
 
     ~Event() override = default;
 
-    Event& operator=(Event const &) = default;
-    Event& operator=(Event &&) noexcept = default;
+    Event &operator=(Event const &) = default;
+    Event &operator=(Event &&) noexcept = default;
 
     // cpp_ami::reaction::Reaction interface
     bool isSuccess() const override;
     std::string toString() const override;
 };
 
-}
+} // namespace cpp_ami::reaction
 
 #endif

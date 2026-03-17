@@ -76,7 +76,7 @@ size_t EventList::eventCount() const
     return events_.size();
 }
 
-cpp_ami::event::Event const& EventList::getEvent(size_t event_idx) const
+cpp_ami::event::Event const &EventList::getEvent(size_t event_idx) const
 {
     assert(event_idx < events_.size());
     return events_[event_idx];

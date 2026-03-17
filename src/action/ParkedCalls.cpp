@@ -6,6 +6,6 @@
 using namespace cpp_ami::action;
 
 ParkedCalls::ParkedCalls()
-    : Action("ParkedCalls", { "ParkingLot" })
+    : Action("ParkedCalls", {"ParkingLot"})
 {
 }

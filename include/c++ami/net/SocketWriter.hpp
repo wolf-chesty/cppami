@@ -31,8 +31,8 @@ public:
 
     virtual ~SocketWriter() = default;
 
-    SocketWriter& operator=(SocketWriter const &) = delete;
-    SocketWriter& operator=(SocketWriter &&)  = delete;
+    SocketWriter &operator=(SocketWriter const &) = delete;
+    SocketWriter &operator=(SocketWriter &&) = delete;
 
     /// @brief Writes \c buf to the socket.
     ///
@@ -40,9 +40,9 @@ public:
     void write(std::string_view buf) const;
 
 private:
-    socket_ptr_t socket_;   ///< Socket to write to.
+    socket_ptr_t socket_; ///< Socket to write to.
 };
 
-}
+} // namespace cpp_ami::net
 
 #endif

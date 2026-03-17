@@ -8,12 +8,11 @@
 
 namespace cpp_ami::action {
 
-class VoicemailBoxSummary
-    : public Action {
+class VoicemailBoxSummary : public Action {
 public:
     explicit VoicemailBoxSummary(std::string context, std::string mailbox);
 };
 
-}
+} // namespace cpp_ami::action
 
 #endif

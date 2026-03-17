@@ -8,12 +8,11 @@
 
 namespace cpp_ami::action {
 
-class MailboxStatus
-    : public Action {
+class MailboxStatus : public Action {
 public:
     explicit MailboxStatus(std::string mailbox);
 };
 
-}
+} // namespace cpp_ami::action
 
 #endif

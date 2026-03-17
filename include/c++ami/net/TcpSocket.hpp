@@ -36,8 +36,8 @@ public:
     /// Closes the socket file descriptor.
     virtual ~TcpSocket();
 
-    TcpSocket& operator=(TcpSocket const &) = delete;
-    TcpSocket& operator=(TcpSocket &&) = delete;
+    TcpSocket &operator=(TcpSocket const &) = delete;
+    TcpSocket &operator=(TcpSocket &&) = delete;
 
     /// @brief Reads data from the socket.
     ///
@@ -74,12 +74,12 @@ private:
     /// @param port Port of hostname to attach socket to.
     int open(std::string_view hostname, uint16_t port);
 
-    std::mutex read_mutex_;     ///< Mutex used to control read access.
-    std::mutex write_mutex_;    ///< Mutex used to control write access..
+    std::mutex read_mutex_;  ///< Mutex used to control read access.
+    std::mutex write_mutex_; ///< Mutex used to control write access..
 
-    int sock_fd_{-1};           ///< Socket file descriptor.
+    int sock_fd_{-1}; ///< Socket file descriptor.
 };
 
-}
+} // namespace cpp_ami::net
 
 #endif

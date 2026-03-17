@@ -8,12 +8,11 @@
 
 namespace cpp_ami::action {
 
-class ListCommands
-    : public Action {
+class ListCommands : public Action {
 public:
     ListCommands();
 };
 
-}
+} // namespace cpp_ami::action
 
 #endif

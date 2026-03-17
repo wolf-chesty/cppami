@@ -3,9 +3,9 @@
 
 #include <gtest/gtest.h>
 
-#include <string>
 #include "c++ami/action/Park.hpp"
 #include "c++ami/EventDispatcher.hpp"
+#include <string>
 
 TEST(event_dispatcher, dispatch_test)
 {
@@ -19,9 +19,8 @@ TEST(event_dispatcher, dispatch_test)
     park["Parkinglot"] = "mama";
     park["ParkingSpace"] = "kusa";
 
-    EventDispatcher dispatcher([&park](EventDispatcher::event_ptr_t dict) -> void {
-        EXPECT_EQ(dict->toString(), park.toString());
-    });
+    EventDispatcher dispatcher(
+        [&park](EventDispatcher::event_ptr_t dict) -> void { EXPECT_EQ(dict->toString(), park.toString()); });
 
     dispatcher.addEvent(park.toString());
 }

@@ -3,14 +3,14 @@
 
 #include <gtest/gtest.h>
 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <memory>
-#include "c++ami/net/TcpSocket.hpp"
-#include <future>
-#include <thread>
-#include "c++ami/util/ScopeGuard.hpp"
 #include "c++ami/net/SocketWriter.hpp"
+#include "c++ami/net/TcpSocket.hpp"
+#include "c++ami/util/ScopeGuard.hpp"
+#include <future>
+#include <memory>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <thread>
 
 TEST(socket_writer, write_test)
 {
@@ -38,7 +38,7 @@ TEST(socket_writer, write_test)
         address.sin_addr.s_addr = INADDR_ANY;
         address.sin_port = htons(port);
 
-        ret = bind(server_fd, reinterpret_cast<sockaddr*>(&address), sizeof(address));
+        ret = bind(server_fd, reinterpret_cast<sockaddr *>(&address), sizeof(address));
         EXPECT_GE(ret, 0);
 
         ret = listen(server_fd, 3);
@@ -46,12 +46,13 @@ TEST(socket_writer, write_test)
 
         int addrlen = sizeof(address);
         server_promise.set_value();
-        auto new_socket = accept(server_fd, reinterpret_cast<sockaddr*>(&address), reinterpret_cast<socklen_t*>(&addrlen));
+        auto new_socket =
+            accept(server_fd, reinterpret_cast<sockaddr *>(&address), reinterpret_cast<socklen_t *>(&addrlen));
         EXPECT_GE(new_socket, 0);
         util::ScopeGuard socket_guard([new_socket]() -> void { close(new_socket); });
 
         char val[1024] = {0};
-        read(new_socket, val,  sizeof(val));
+        read(new_socket, val, sizeof(val));
         EXPECT_EQ(ping, std::string(val));
     });
 

@@ -6,7 +6,7 @@
 using namespace cpp_ami::action;
 
 MailboxStatus::MailboxStatus(std::string mailbox)
-    : Action("MailboxStatus", { "Mailbox" })
+    : Action("MailboxStatus", {"Mailbox"})
 {
     setValue("Mailbox", std::move(mailbox));
 }

@@ -25,9 +25,7 @@ int main()
 {
     cpp_ami::Connection conn("10.3.29.93");
 
-    conn.addCallback([](cpp_ami::util::KeyValDict const *dict) -> void {
-        std::cout << dict->toString();
-    });
+    conn.addCallback([](cpp_ami::util::KeyValDict const *dict) -> void { std::cout << dict->toString(); });
 
     cpp_ami::action::Login login("admin", "test");
     login["AuthType"] = "plain";

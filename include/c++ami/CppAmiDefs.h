@@ -14,6 +14,6 @@ static std::string const SEP{": "};
 
 constexpr size_t MAX_BUF_SIZE{65535};
 
-}
+} // namespace cpp_ami
 
 #endif

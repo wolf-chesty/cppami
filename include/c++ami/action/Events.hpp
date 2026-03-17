@@ -8,12 +8,11 @@
 
 namespace cpp_ami::action {
 
-class Events
-    : public Action {
+class Events : public Action {
 public:
     Events();
 };
 
-}
+} // namespace cpp_ami::action
 
 #endif

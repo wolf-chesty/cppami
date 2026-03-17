@@ -22,8 +22,8 @@ public:
     Reaction(Reaction &&) noexcept = default;
     virtual ~Reaction() = default;
 
-    Reaction& operator=(Reaction const &) = default;
-    Reaction& operator=(Reaction &&) noexcept = default;
+    Reaction &operator=(Reaction const &) = default;
+    Reaction &operator=(Reaction &&) noexcept = default;
 
     /// @brief Checks the Status field of the message and returns \c true if the field has a success value.
     ///
@@ -44,6 +44,6 @@ protected:
     static bool isSuccess(std::string const &status);
 };
 
-}
+} // namespace cpp_ami::reaction
 
 #endif

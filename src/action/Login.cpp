@@ -8,7 +8,7 @@
 using namespace cpp_ami::action;
 
 Login::Login()
-    : Action("Login", { "Username", "AuthType", "Secret", "Key", "Events" })
+    : Action("Login", {"Username", "AuthType", "Secret", "Key", "Events"})
 {
 }
 

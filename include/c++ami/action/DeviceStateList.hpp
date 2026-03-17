@@ -13,6 +13,6 @@ public:
     DeviceStateList();
 };
 
-} // namespace cpp_ami
+} // namespace cpp_ami::action
 
 #endif

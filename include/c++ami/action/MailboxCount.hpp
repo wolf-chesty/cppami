@@ -8,12 +8,11 @@
 
 namespace cpp_ami::action {
 
-class MailboxCount
-    : public Action {
+class MailboxCount : public Action {
 public:
     explicit MailboxCount(std::string mailbox);
 };
 
-}
+} // namespace cpp_ami::action
 
 #endif

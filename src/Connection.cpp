@@ -17,22 +17,14 @@ Connection::Connection(std::string_view hostname, uint16_t port)
     auto sock = std::make_shared<net::TcpSocket>(hostname, port);
 
     dispatcher_ = std::make_unique<EventDispatcher>(
-        [this](EventDispatcher::event_ptr_t dict) -> void {
-            dispatchHandler(std::move(dict));
-        });
+        [this](EventDispatcher::event_ptr_t dict) -> void { dispatchHandler(std::move(dict)); });
 
     stream_parser_ = std::make_unique<StreamParser>(
-        [this](std::string ami_version) -> void {
-            ami_version_ = std::move(ami_version);
-        },
-        [this](std::string event) -> void {
-            dispatcher_->addEvent(std::move(event));
-        });
+        [this](std::string ami_version) -> void { ami_version_ = std::move(ami_version); },
+        [this](std::string event) -> void { dispatcher_->addEvent(std::move(event)); });
 
-    reader_ = std::make_unique<net::SocketReader>(sock,
-        [this](std::string buf) -> void {
-            stream_parser_->addBuf(std::move(buf));
-    });
+    reader_ = std::make_unique<net::SocketReader>(
+        sock, [this](std::string buf) -> void { stream_parser_->addBuf(std::move(buf)); });
 
     writer_ = std::make_unique<net::SocketWriter>(sock);
 }
@@ -89,7 +81,8 @@ Connection::reaction_ptr_t Connection::invoke(action::Action const &action) cons
     return reaction.get();
 }
 
-Connection::reaction_ptr_t Connection::invoke(action::Action const &action, std::chrono::milliseconds const &timeout) const
+Connection::reaction_ptr_t Connection::invoke(action::Action const &action,
+                                              std::chrono::milliseconds const &timeout) const
 {
     auto reaction = dispatcher_->getEventPipe(action.getActionId());
 
@@ -101,7 +94,8 @@ Connection::reaction_ptr_t Connection::invoke(action::Action const &action, std:
     // termination (an std::broken_promise exception when the application terminates and
     // promise::setValue()/future::get() wasn't invoked). In order to avoid that poke the exception into the promise,
     // this will cause future::get() to raise the exception resulting in only one exception being raised.
-    std::runtime_error const err(fmt::format("Event timeout: Timeout waiting for event; ActionID={}", action.getActionId()));
+    std::runtime_error const err(
+        fmt::format("Event timeout: Timeout waiting for event; ActionID={}", action.getActionId()));
     if (auto const status = reaction.wait_for(timeout); status == std::future_status::timeout) {
         dispatcher_->setExceptionOnPipe(action.getActionId(), std::make_exception_ptr(err));
     }

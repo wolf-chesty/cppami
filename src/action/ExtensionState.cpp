@@ -6,6 +6,6 @@
 using namespace cpp_ami::action;
 
 ExtensionState::ExtensionState()
-    : Action("ExtensionState", { "Exten", "Context" })
+    : Action("ExtensionState", {"Exten", "Context"})
 {
 }

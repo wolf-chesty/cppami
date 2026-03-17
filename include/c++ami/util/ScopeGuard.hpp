@@ -28,13 +28,13 @@ public:
     /// @brief Invokes the callback.
     virtual ~ScopeGuard();
 
-    ScopeGuard& operator=(ScopeGuard const &) = delete;
-    ScopeGuard& operator=(ScopeGuard &&right) noexcept;
+    ScopeGuard &operator=(ScopeGuard const &) = delete;
+    ScopeGuard &operator=(ScopeGuard &&right) noexcept;
 
 private:
-    callback_t callback_;       ///< Callback that gets invoked upon object destruction.
+    callback_t callback_; ///< Callback that gets invoked upon object destruction.
 };
 
-}
+} // namespace cpp_ami::util
 
 #endif

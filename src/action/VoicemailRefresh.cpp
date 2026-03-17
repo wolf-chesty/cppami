@@ -6,6 +6,6 @@
 using namespace cpp_ami::action;
 
 VoicemailRefresh::VoicemailRefresh()
-    : Action("VoicemailRefresh", { "Context", "Mailbox" })
+    : Action("VoicemailRefresh", {"Context", "Mailbox"})
 {
 }

@@ -6,6 +6,6 @@
 using namespace cpp_ami::action;
 
 Getvar::Getvar()
-    : Action("Getvar", { "Channel", "Variable" })
+    : Action("Getvar", {"Channel", "Variable"})
 {
 }

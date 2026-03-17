@@ -10,9 +10,7 @@ TEST(scope_guard, exit_scope_test)
     bool test_cond = true;
 
     {
-        cpp_ami::util::ScopeGuard guard([&test_cond]() {
-            test_cond = false;
-        });
+        cpp_ami::util::ScopeGuard guard([&test_cond]() { test_cond = false; });
     }
 
     EXPECT_EQ(test_cond, false);
@@ -22,9 +20,7 @@ TEST(scope_guard, in_scope_test)
 {
     bool test_cond = true;
 
-    cpp_ami::util::ScopeGuard guard([&test_cond]() {
-        test_cond = false;
-    });
+    cpp_ami::util::ScopeGuard guard([&test_cond]() { test_cond = false; });
 
     EXPECT_EQ(test_cond, true);
 }
@@ -35,9 +31,7 @@ TEST(scope_guard, move_test)
     std::unique_ptr<cpp_ami::util::ScopeGuard> g;
 
     {
-        cpp_ami::util::ScopeGuard guard([&test_cond]() {
-            test_cond = false;
-        });
+        cpp_ami::util::ScopeGuard guard([&test_cond]() { test_cond = false; });
 
         g = std::make_unique<cpp_ami::util::ScopeGuard>(std::move(guard));
     }

@@ -63,7 +63,8 @@ void EventDispatcher::workThread()
 
     while (thread_run_) {
         std::unique_lock lock(events_mutex_);
-        thread_cv_.wait(lock, [this]() -> bool { return !thread_run_ || !events_.empty(); });;
+        thread_cv_.wait(lock, [this]() -> bool { return !thread_run_ || !events_.empty(); });
+        ;
         std::swap(events_, events);
         lock.unlock();
 
@@ -92,7 +93,7 @@ void EventDispatcher::dispatchEvent(std::string event_buf)
 
 bool EventDispatcher::dispatchEvent(std::string const &action_id, util::KeyValDict &dict)
 {
-    std::scoped_lock const lock (promise_map_mutex_, event_map_mutex_);
+    std::scoped_lock const lock(promise_map_mutex_, event_map_mutex_);
 
     // Grab pipe for variable return
     auto const p_it = promise_map_.find(action_id);

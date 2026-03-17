@@ -8,12 +8,11 @@
 
 namespace cpp_ami::action {
 
-class ExtensionState
-    : public Action {
+class ExtensionState : public Action {
 public:
     ExtensionState();
 };
 
-}
+} // namespace cpp_ami::action
 
 #endif

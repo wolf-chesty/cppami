@@ -8,12 +8,11 @@
 
 namespace cpp_ami::action {
 
-class Getvar
-    : public Action {
+class Getvar : public Action {
 public:
     Getvar();
 };
 
-}
+} // namespace cpp_ami::action
 
 #endif

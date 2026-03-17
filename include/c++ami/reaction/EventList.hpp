@@ -44,8 +44,8 @@ public:
     explicit EventList(util::KeyValDict dict) noexcept;
     ~EventList() override = default;
 
-    EventList& operator=(EventList const &right);
-    EventList& operator=(EventList &&) noexcept = default;
+    EventList &operator=(EventList const &right);
+    EventList &operator=(EventList &&) noexcept = default;
 
     /// @brief Adds \c event to the object.
     ///
@@ -62,17 +62,17 @@ public:
     std::string toString() const override;
 
     size_t eventCount() const;
-    event::Event const& getEvent(size_t event_idx) const;
+    event::Event const &getEvent(size_t event_idx) const;
 
 private:
     static bool isListComplete(std::string const &event_list_val);
 
-    event::Event head_;                    ///< The first event in the AMI events that make up this object.
-    std::unique_ptr<event::Event const> tail_;   ///< The last event in the AMI events that make up this object.
-    std::vector<event::Event> events_;     ///< AMI events that make up this object.
+    event::Event head_;                        ///< The first event in the AMI events that make up this object.
+    std::unique_ptr<event::Event const> tail_; ///< The last event in the AMI events that make up this object.
+    std::vector<event::Event> events_;         ///< AMI events that make up this object.
 };
 
-}
-}
+} // namespace reaction
+} // namespace cpp_ami
 
 #endif

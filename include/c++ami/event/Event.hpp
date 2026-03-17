@@ -15,8 +15,7 @@ namespace cpp_ami::event {
 /// This object is an interface for an AMI event object that is not associated with an AMI action. By inheriting
 /// unmatched events from this base class it can be a bit easier writing polymorphic code taking advantage of the type
 /// of this object.
-class Event
-    : public util::KeyValDict {
+class Event : public util::KeyValDict {
 public:
     Event() = delete;
     Event(Event const &) = default;
@@ -29,10 +28,10 @@ public:
 
     ~Event() override = default;
 
-    Event& operator=(Event const &) = default;
-    Event& operator=(Event &&) noexcept = default;
+    Event &operator=(Event const &) = default;
+    Event &operator=(Event &&) noexcept = default;
 };
 
-}
+} // namespace cpp_ami::event
 
 #endif

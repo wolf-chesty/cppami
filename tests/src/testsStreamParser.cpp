@@ -3,19 +3,17 @@
 
 #include <gtest/gtest.h>
 
-#include <string>
 #include "c++ami/StreamParser.hpp"
+#include <string>
 
 TEST(stream_parser, byte_test)
 {
     using namespace cpp_ami;
 
     std::string const expected_version("test version");
-    auto version_handler = [&expected_version](std::string version) -> void {
-        EXPECT_EQ(version, expected_version);
-    };
+    auto version_handler = [&expected_version](std::string version) -> void { EXPECT_EQ(version, expected_version); };
 
-    std::string const expected_message ="message 1\r\nmessage 2\r\nmessage 3\r\n\r\n";
+    std::string const expected_message = "message 1\r\nmessage 2\r\nmessage 3\r\n\r\n";
     auto message_handler = [&expected_message, idx = 0](std::string message) -> void {
         EXPECT_EQ(message, expected_message);
     };
@@ -38,11 +36,9 @@ TEST(stream_parser, whole_test)
     using namespace cpp_ami;
 
     std::string const expected_version("test version");
-    auto version_handler = [&expected_version](std::string version) -> void {
-        EXPECT_EQ(version, expected_version);
-    };
+    auto version_handler = [&expected_version](std::string version) -> void { EXPECT_EQ(version, expected_version); };
 
-    std::string const expected_message ="message 1\r\nmessage 2\r\nmessage 3\r\n\r\n";
+    std::string const expected_message = "message 1\r\nmessage 2\r\nmessage 3\r\n\r\n";
     auto message_handler = [&expected_message, idx = 0](std::string message) -> void {
         EXPECT_EQ(message, expected_message);
     };
@@ -56,11 +52,9 @@ TEST(stream_parser, straddle_test)
     using namespace cpp_ami;
 
     std::string const expected_version("test version");
-    auto version_handler = [&expected_version](std::string version) -> void {
-        EXPECT_EQ(version, expected_version);
-    };
+    auto version_handler = [&expected_version](std::string version) -> void { EXPECT_EQ(version, expected_version); };
 
-    std::string const expected_message ="message 1\r\nmessage 2\r\nmessage 3\r\n\r\n";
+    std::string const expected_message = "message 1\r\nmessage 2\r\nmessage 3\r\n\r\n";
     auto message_handler = [&expected_message, idx = 0](std::string message) -> void {
         EXPECT_EQ(message, expected_message);
     };

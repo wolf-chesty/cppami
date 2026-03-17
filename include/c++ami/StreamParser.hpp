@@ -39,8 +39,8 @@ public:
 
     virtual ~StreamParser();
 
-    StreamParser& operator=(StreamParser const &) = delete;
-    StreamParser& operator=(StreamParser &&) noexcept = delete;
+    StreamParser &operator=(StreamParser const &) = delete;
+    StreamParser &operator=(StreamParser &&) noexcept = delete;
 
     /// @brief Adds a buffer sequence read from the socket to the list of buffer chunks to process.
     ///
@@ -68,21 +68,24 @@ private:
     /// contains an entire event message the event buffer is dispatched and further message chunks are evaluated.
     void processChunk(std::string stream_chunk);
 
-    bool first_event_{ true };      ///< Flag indicating if a received chunk is the first message part. The first message will contain the AMI version string.
-    std::string event_buf_;         ///< Working event buffer. Partial AMI events are concatenated to this string to build up a complete message.
+    bool first_event_{true}; ///< Flag indicating if a received chunk is the first message part. The first message will
+                             ///< contain the AMI version string.
+    std::string event_buf_;  ///< Working event buffer. Partial AMI events are concatenated to this string to build up a
+                             ///< complete message.
 
-    std::vector<std::string> stream_chunks_;    ///< Collection of stream chunks to process.
-    std::mutex stream_chunks_mutex_;            ///< Mutex to control access to collection of stream chunks.
+    std::vector<std::string> stream_chunks_; ///< Collection of stream chunks to process.
+    std::mutex stream_chunks_mutex_;         ///< Mutex to control access to collection of stream chunks.
 
-    std::thread thread_;                        ///< Handle to worker thread.
-    std::atomic<bool> thread_run_{ false };     ///< Flag to stop worker thread.
-    std::condition_variable thread_cv_;         ///< Condition flag to wake sleeping thread when new message chunks have arrived for processing.
+    std::thread thread_;                  ///< Handle to worker thread.
+    std::atomic<bool> thread_run_{false}; ///< Flag to stop worker thread.
+    std::condition_variable
+        thread_cv_; ///< Condition flag to wake sleeping thread when new message chunks have arrived for processing.
 
-    callback_t dispatch_{ [](std::string) -> void {} };                 ///< Dispatch function to invoke with AMI event messages.
-    version_callback_t set_ami_version_{ [](std::string) -> void {} };  ///< Dispatch function to invoke with the AMI server version.
+    callback_t dispatch_{[](std::string) -> void {}}; ///< Dispatch function to invoke with AMI event messages.
+    version_callback_t set_ami_version_{
+        [](std::string) -> void {}}; ///< Dispatch function to invoke with the AMI server version.
 };
 
-}
+} // namespace cpp_ami
 
 #endif
-

@@ -13,6 +13,6 @@ public:
     MessageSend();
 };
 
-}
+} // namespace cpp_ami::action
 
 #endif

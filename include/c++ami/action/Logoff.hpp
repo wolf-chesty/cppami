@@ -8,12 +8,11 @@
 
 namespace cpp_ami::action {
 
-class Logoff
-    : public Action {
+class Logoff : public Action {
 public:
     Logoff();
 };
 
-}
+} // namespace cpp_ami::action
 
 #endif

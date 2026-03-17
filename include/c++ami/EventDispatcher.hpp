@@ -4,8 +4,8 @@
 #ifndef AMI_EVENT_DISPATCHER_HPP
 #define AMI_EVENT_DISPATCHER_HPP
 
-#include "c++ami/reaction/Reaction.hpp"
 #include "c++ami/event/Event.hpp"
+#include "c++ami/reaction/Reaction.hpp"
 #include <atomic>
 #include <condition_variable>
 #include <exception>
@@ -20,9 +20,9 @@
 namespace cpp_ami {
 
 namespace reaction {
-    class Reaction;
-    class EventList;
-}
+class Reaction;
+class EventList;
+} // namespace reaction
 
 /// @class EventDispatcher
 ///
@@ -65,8 +65,8 @@ public:
 
     virtual ~EventDispatcher();
 
-    EventDispatcher& operator=(EventDispatcher const &) = delete;
-    EventDispatcher& operator=(EventDispatcher &&) noexcept = delete;
+    EventDispatcher &operator=(EventDispatcher const &) = delete;
+    EventDispatcher &operator=(EventDispatcher &&) noexcept = delete;
 
     /// @brief Adds a new incoming event to be dispatched.
     ///
@@ -142,22 +142,24 @@ private:
     /// function will also free any memory allocated for working multipart response events.
     void cleanupObject();
 
-    std::vector<std::string> events_;                           ///< Events received from AMI.
-    std::mutex events_mutex_;                                   ///< Mutex controlling access to event collection.
+    std::vector<std::string> events_; ///< Events received from AMI.
+    std::mutex events_mutex_;         ///< Mutex controlling access to event collection.
 
-    std::thread thread_;                                        ///< Handle to working thread.
-    std::atomic<bool> thread_run_{ false };                     ///< Flag to stop working thread.
-    std::condition_variable thread_cv_;                         ///< Condition variable used to wake working thread on receipt of new events.
+    std::thread thread_;                  ///< Handle to working thread.
+    std::atomic<bool> thread_run_{false}; ///< Flag to stop working thread.
+    std::condition_variable thread_cv_;   ///< Condition variable used to wake working thread on receipt of new events.
 
-    event_callback_t dispatch_{ [](event_ptr_t) -> void {} };   ///< Dispatch function to call on non-response events.
+    event_callback_t dispatch_{[](event_ptr_t) -> void {}}; ///< Dispatch function to call on non-response events.
 
-    std::unordered_map<std::string, pipe_t> promise_map_;       ///< Promise map to return events on.
-    std::mutex promise_map_mutex_;                              ///< Mutex to control access to promise collection.
+    std::unordered_map<std::string, pipe_t> promise_map_; ///< Promise map to return events on.
+    std::mutex promise_map_mutex_;                        ///< Mutex to control access to promise collection.
 
-    std::unordered_map<std::string, std::unique_ptr<reaction::EventList>> event_map_;   ///< Event map to store working events in. Some events are made up of multiple event messages; in-progress messages are stored here until ready for dispatch.
-    std::mutex event_map_mutex_;                                ///< Mutex to control access to in-progress event collection.
+    std::unordered_map<std::string, std::unique_ptr<reaction::EventList>>
+        event_map_; ///< Event map to store working events in. Some events are made up of multiple event messages;
+                    ///< in-progress messages are stored here until ready for dispatch.
+    std::mutex event_map_mutex_; ///< Mutex to control access to in-progress event collection.
 };
 
-}
+} // namespace cpp_ami
 
 #endif

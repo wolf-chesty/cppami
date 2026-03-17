@@ -8,12 +8,11 @@
 
 namespace cpp_ami::action {
 
-class Ping
-    : public Action {
+class Ping : public Action {
 public:
     Ping();
 };
 
-}
+} // namespace cpp_ami::action
 
 #endif

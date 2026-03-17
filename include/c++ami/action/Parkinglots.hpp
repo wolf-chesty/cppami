@@ -8,12 +8,11 @@
 
 namespace cpp_ami::action {
 
-class Parkinglots
-    : public Action {
+class Parkinglots : public Action {
 public:
     Parkinglots();
 };
 
-}
+} // namespace cpp_ami::action
 
 #endif

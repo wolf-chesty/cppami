@@ -6,7 +6,7 @@
 using namespace cpp_ami::action;
 
 VoicemailBoxSummary::VoicemailBoxSummary(std::string context, std::string mailbox)
-    : Action("VoicemailBoxSummary", { "Context", "Mailbox" })
+    : Action("VoicemailBoxSummary", {"Context", "Mailbox"})
 {
     setValue("Context", std::move(context));
     setValue("Mailbox", std::move(mailbox));

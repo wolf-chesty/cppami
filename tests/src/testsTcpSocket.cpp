@@ -3,12 +3,12 @@
 
 #include <gtest/gtest.h>
 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <memory>
 #include "c++ami/net/TcpSocket.hpp"
 #include "c++ami/util/ScopeGuard.hpp"
 #include <future>
+#include <memory>
+#include <netinet/in.h>
+#include <sys/socket.h>
 #include <thread>
 
 TEST(tcp_socket, write_test)
@@ -35,7 +35,7 @@ TEST(tcp_socket, write_test)
         address.sin_addr.s_addr = INADDR_ANY;
         address.sin_port = htons(port);
 
-        ret = bind(server_fd, reinterpret_cast<sockaddr*>(&address), sizeof(address));
+        ret = bind(server_fd, reinterpret_cast<sockaddr *>(&address), sizeof(address));
         EXPECT_GE(ret, 0);
 
         ret = listen(server_fd, 3);
@@ -43,12 +43,13 @@ TEST(tcp_socket, write_test)
 
         int addrlen = sizeof(address);
         server_promise.set_value();
-        auto new_socket = accept(server_fd, reinterpret_cast<sockaddr*>(&address), reinterpret_cast<socklen_t*>(&addrlen));
+        auto new_socket =
+            accept(server_fd, reinterpret_cast<sockaddr *>(&address), reinterpret_cast<socklen_t *>(&addrlen));
         EXPECT_GE(new_socket, 0);
         util::ScopeGuard socket_guard([new_socket]() -> void { close(new_socket); });
 
         char ping[1024] = {0};
-        read(new_socket, ping,  sizeof(ping));
+        read(new_socket, ping, sizeof(ping));
         EXPECT_EQ(ping, value);
     });
 
@@ -83,7 +84,7 @@ TEST(tcp_socket, read_test)
         address.sin_addr.s_addr = INADDR_ANY;
         address.sin_port = htons(port);
 
-        ret = bind(server_fd, reinterpret_cast<sockaddr*>(&address), sizeof(address));
+        ret = bind(server_fd, reinterpret_cast<sockaddr *>(&address), sizeof(address));
         EXPECT_GE(ret, 0);
 
         ret = listen(server_fd, 3);
@@ -91,11 +92,12 @@ TEST(tcp_socket, read_test)
 
         int addrlen = sizeof(address);
         server_promise.set_value();
-        auto new_socket = accept(server_fd, reinterpret_cast<sockaddr*>(&address), reinterpret_cast<socklen_t*>(&addrlen));
+        auto new_socket =
+            accept(server_fd, reinterpret_cast<sockaddr *>(&address), reinterpret_cast<socklen_t *>(&addrlen));
         EXPECT_GE(new_socket, 0);
         util::ScopeGuard socket_guard([new_socket]() -> void { close(new_socket); });
 
-        send(new_socket, ping,  strlen(ping), 0);
+        send(new_socket, ping, strlen(ping), 0);
     });
 
     server_future.get();
@@ -132,7 +134,7 @@ TEST(tcp_socket, read_write_test)
         address.sin_addr.s_addr = INADDR_ANY;
         address.sin_port = htons(port);
 
-        ret = bind(server_fd, reinterpret_cast<sockaddr*>(&address), sizeof(address));
+        ret = bind(server_fd, reinterpret_cast<sockaddr *>(&address), sizeof(address));
         EXPECT_GE(ret, 0);
 
         ret = listen(server_fd, 3);
@@ -140,15 +142,16 @@ TEST(tcp_socket, read_write_test)
 
         int addrlen = sizeof(address);
         server_promise.set_value();
-        auto new_socket = accept(server_fd, reinterpret_cast<sockaddr*>(&address), reinterpret_cast<socklen_t*>(&addrlen));
+        auto new_socket =
+            accept(server_fd, reinterpret_cast<sockaddr *>(&address), reinterpret_cast<socklen_t *>(&addrlen));
         EXPECT_GE(new_socket, 0);
         util::ScopeGuard socket_guard([new_socket]() -> void { close(new_socket); });
 
         char val[1024] = {0};
-        read(new_socket, val,  sizeof(val));
+        read(new_socket, val, sizeof(val));
         EXPECT_EQ(ping, std::string(val));
 
-        send(new_socket, pong.c_str(),  pong.length(), 0);
+        send(new_socket, pong.c_str(), pong.length(), 0);
     });
 
     server_future.get();

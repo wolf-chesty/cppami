@@ -39,8 +39,8 @@ public:
     /// @brief Stops the thread.
     virtual ~SocketReader();
 
-    SocketReader& operator=(SocketReader const &) = delete;
-    SocketReader& operator=(SocketReader &&) = delete;
+    SocketReader &operator=(SocketReader const &) = delete;
+    SocketReader &operator=(SocketReader &&) = delete;
 
 private:
     /// @brief Starts the data reader work thread.
@@ -53,13 +53,14 @@ private:
     ///        received data.
     void workThread() const;
 
-    handler_t callback_{ [](std::string) -> void { } }; ///< Callback that will be invoked whenever new data as been read from \c m_socket.
+    handler_t callback_{
+        [](std::string) -> void {}}; ///< Callback that will be invoked whenever new data as been read from \c m_socket.
 
-    std::thread thread_;                        ///< Handle to data read thread.
-    std::atomic<bool> thread_spin_{ false };    ///< Flag indicating if flag is still running.
-    socket_ptr_t socket_;                       ///< Socket to read data from.
+    std::thread thread_;                   ///< Handle to data read thread.
+    std::atomic<bool> thread_spin_{false}; ///< Flag indicating if flag is still running.
+    socket_ptr_t socket_;                  ///< Socket to read data from.
 };
 
-}
+} // namespace cpp_ami::net
 
 #endif

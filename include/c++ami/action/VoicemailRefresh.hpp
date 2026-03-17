@@ -8,12 +8,11 @@
 
 namespace cpp_ami::action {
 
-class VoicemailRefresh
-    : public Action {
+class VoicemailRefresh : public Action {
 public:
     VoicemailRefresh();
 };
 
-}
+} // namespace cpp_ami::action
 
 #endif

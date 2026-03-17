@@ -99,15 +99,16 @@ private:
     /// @param dict Event values.
     void dispatchHandler(EventDispatcher::event_ptr_t dict);
 
-    std::string ami_version_;   ///< AMI version.
+    std::string ami_version_; ///< AMI version.
 
-    std::unordered_map<event_callback_key_t, event_callback_t> callbacks_;  ///< Collection of event callbacks.
-    std::mutex callbacks_mutex_;                                            ///< Mutex to guard \c m_callbacks collection.
+    std::unordered_map<event_callback_key_t, event_callback_t> callbacks_; ///< Collection of event callbacks.
+    std::mutex callbacks_mutex_; ///< Mutex to guard \c m_callbacks collection.
 
-    std::unique_ptr<EventDispatcher> dispatcher_;   ///< Object responsible for dispatching AMI events.
-    std::unique_ptr<net::SocketReader> reader_;     ///< Object responsible for pulling messages from the AMI socket.
-    std::unique_ptr<net::SocketWriter> writer_;     ///< Object responsible for writing messages to the AMI socket.
-    std::unique_ptr<StreamParser> stream_parser_;   ///< Object responsible for parsing the socket stream into individual AMI messages.
+    std::unique_ptr<EventDispatcher> dispatcher_; ///< Object responsible for dispatching AMI events.
+    std::unique_ptr<net::SocketReader> reader_;   ///< Object responsible for pulling messages from the AMI socket.
+    std::unique_ptr<net::SocketWriter> writer_;   ///< Object responsible for writing messages to the AMI socket.
+    std::unique_ptr<StreamParser>
+        stream_parser_; ///< Object responsible for parsing the socket stream into individual AMI messages.
 };
 
 } // namespace cpp_ami
