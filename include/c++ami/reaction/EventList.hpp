@@ -27,7 +27,6 @@ namespace reaction {
 /// For responses that fail the first AMI event for the response will have a Status of 'failed' or an EventList value
 /// of 'canceled'. In these instances \c m_events will be empty and \c m_tail will be a nullptr and \c m_head will
 /// contain the only returned AMI event for the failed response.
-///
 class EventList : public Reaction {
 public:
     EventList() = delete;

@@ -91,7 +91,7 @@ void TcpSocket::close(int sock_fd)
 
 std::string TcpSocket::read(uint16_t buf_size, timeout_t timeout)
 {
-    std::unique_lock const lock(read_mutex_);
+    std::lock_guard const lock(read_mutex_);
 
     if (sock_fd_ == -1) {
         return "";
@@ -108,7 +108,8 @@ std::string TcpSocket::read(uint16_t buf_size, timeout_t timeout)
     if (ret == -1) {
         throw std::runtime_error(fmt::format("Error reading socket: {}", strerror(errno)));
     }
-    else if (ret == 0) {            // poll timeout
+    // poll timeout
+    else if (ret == 0) {
         return "";
     }
     // fds.revents == POLLIN means data is available for read
@@ -137,7 +138,7 @@ void TcpSocket::write(std::string_view data)
         return;
     }
 
-    std::unique_lock const lock(write_mutex_);
+    std::lock_guard const lock(write_mutex_);
 
     if (sock_fd_ == -1) {
         return;

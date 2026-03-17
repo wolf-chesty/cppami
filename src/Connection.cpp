@@ -53,7 +53,7 @@ std::string Connection::getAmiVersion() const
 
 void Connection::dispatchHandler(EventDispatcher::event_ptr_t dict)
 {
-    std::unique_lock const lock(callbacks_mutex_);
+    std::lock_guard const lock(callbacks_mutex_);
     for (auto const &[_, callback] : callbacks_) {
         callback(dict.get());
     }
@@ -62,14 +62,14 @@ void Connection::dispatchHandler(EventDispatcher::event_ptr_t dict)
 Connection::event_callback_key_t Connection::addCallback(event_callback_t callback)
 {
     auto const id = action::Action::createUuid();
-    std::unique_lock const lock(callbacks_mutex_);
+    std::lock_guard const lock(callbacks_mutex_);
     callbacks_.emplace(id, std::move(callback));
     return id;
 }
 
 void Connection::removeCallback(event_callback_key_t const &key)
 {
-    std::unique_lock const lock(callbacks_mutex_);
+    std::lock_guard const lock(callbacks_mutex_);
     callbacks_.erase(key);
 }
 

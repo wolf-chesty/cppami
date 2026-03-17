@@ -12,12 +12,10 @@
 
 namespace cpp_ami::net {
 
-///
 /// @class TcpSocket
 ///
 /// @brief Controls the lifetime of a socket file descriptor and allows thread-safe reading and writing to the managed
 ///        socket.
-///
 class TcpSocket {
 public:
     using timeout_t = std::chrono::milliseconds;

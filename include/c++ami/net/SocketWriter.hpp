@@ -11,11 +11,9 @@ namespace cpp_ami::net {
 
 class TcpSocket;
 
-///
 /// @class SocketWriter
 ///
 /// @brief Provides an interface for writing to a socket.
-///
 class SocketWriter {
 public:
     using socket_t = net::TcpSocket;

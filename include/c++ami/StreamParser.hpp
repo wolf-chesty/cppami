@@ -14,14 +14,12 @@
 
 namespace cpp_ami {
 
-///
 /// @class StreamParser
 ///
 /// @brief Parses data read from the AMI socket server.
 ///
-/// As messages data is read from the socket attached to the AMI server this class will build full message
-/// events and dispatch them to a callback function.
-///
+/// As messages data is read from the socket attached to the AMI server this class will build full message events and
+/// dispatch them to a callback function.
 class StreamParser {
 public:
     using callback_t = std::function<void(std::string)>;
@@ -32,8 +30,8 @@ public:
     StreamParser(StreamParser const &) = delete;
     StreamParser(StreamParser &&) noexcept = delete;
 
-    /// @brief Constructs an object with \c version_callback and \c callback functions to handle events from
-    ///        the AMI server.
+    /// @brief Constructs an object with \c version_callback and \c callback functions to handle events from the AMI
+    ///        server.
     ///
     /// @param version_callback Callback that will be invoked when the AMI server version is received.
     /// @param callback Callback that will be invoked when AMI messages are received.
@@ -59,16 +57,15 @@ private:
     /// @brief Worker thread that will process all stream chunks creating AMI events messages for dispatch.
     void workThread();
 
-    /// @brief Evaluates \c stream_chunk and determines if it contains an entire AMI event message or is part
-    ///        of an AMI message.
+    /// @brief Evaluates \c stream_chunk and determines if it contains an entire AMI event message or is part of an AMI
+    ///        message.
     ///
     /// @param stream_chunk Message part.
     ///
-    /// This functions evaluates \c stream_chunk to determine if it contains an entire AMI message event, if so
-    /// a callback is invoked with the message for further processing. If \c stream_chunk contains a part of an
-    /// AMI message \c stream_chunk is appended onto a working event buffer. When it is determined that the
-    /// event buffer contains an entire event message the event buffer is dispatched and further message chunks
-    /// are evaluated.
+    /// This functions evaluates \c stream_chunk to determine if it contains an entire AMI message event, if so a
+    /// callback is invoked with the message for further processing. If \c stream_chunk contains a part of an AMI
+    /// message \c stream_chunk is appended onto a working event buffer. When it is determined that the event buffer
+    /// contains an entire event message the event buffer is dispatched and further message chunks are evaluated.
     void processChunk(std::string stream_chunk);
 
     bool first_event_{ true };      ///< Flag indicating if a received chunk is the first message part. The first message will contain the AMI version string.

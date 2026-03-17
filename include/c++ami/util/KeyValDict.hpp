@@ -12,14 +12,12 @@
 
 namespace cpp_ami::util {
 
-///
 /// @class KeyValDict
 ///
 /// @brief Contains a dictionary of key-value pairs.
 ///
 /// The Asterisk Management Interface (AMI) communicates by sending groups of key-value pairs. This object takes a text
 /// stream containing an AMI Action/Event and converts it into an object.
-///
 class KeyValDict {
 public:
     KeyValDict() = delete;

@@ -28,8 +28,7 @@ void EventDispatcher::cleanupObject()
 {
     std::scoped_lock const lock(promise_map_mutex_, event_map_mutex_);
 
-    // Not sure what to do here; sending nullptr's out on pipes to avoid std::broken_promise exception
-    // on terminate
+    // Not sure what to do here; sending nullptr's out on pipes to avoid std::broken_promise exception on terminate
     assert(promise_map_.empty());
     for (auto &[_, pipe] : promise_map_) {
         pipe.set_value(nullptr);
@@ -75,7 +74,7 @@ void EventDispatcher::workThread()
     }
 
     // Finish building events
-    std::unique_lock const lock(events_mutex_);
+    std::lock_guard const lock(events_mutex_);
     for (auto event_buf : events_) {
         dispatchEvent(std::move(event_buf));
     }
@@ -86,8 +85,7 @@ void EventDispatcher::dispatchEvent(std::string event_buf)
 {
     util::KeyValDict dict(std::move(event_buf));
     if (auto const action_id = dict.getValue("ActionID"); !action_id || !dispatchEvent(action_id.value(), dict)) {
-        // Event is either missing the action ID or isn't in response to an AMI action; dispatch a regular
-        // event
+        // Event is either missing the action ID or isn't in response to an AMI action; dispatch a regular event
         dispatch_(std::make_unique<event::Event const>(std::move(dict)));
     }
 }
@@ -140,7 +138,7 @@ bool EventDispatcher::dispatchEvent(std::string const &action_id, util::KeyValDi
 
 void EventDispatcher::addEvent(std::string event)
 {
-    std::unique_lock const lock(events_mutex_);
+    std::lock_guard const lock(events_mutex_);
     events_.push_back(std::move(event));
     thread_cv_.notify_one();
 }
@@ -152,7 +150,7 @@ std::future<EventDispatcher::reaction_ptr_t> EventDispatcher::getEventPipe(std::
     auto future = promise.get_future();
 
     // Add promise for return event
-    std::unique_lock const lock(promise_map_mutex_);
+    std::lock_guard const lock(promise_map_mutex_);
     promise_map_.emplace(action_id, std::move(promise));
 
     return future;

@@ -24,7 +24,6 @@ namespace reaction {
     class EventList;
 }
 
-///
 /// @class EventDispatcher
 ///
 /// @brief Dispatches event messages received from the AMI server.
@@ -39,7 +38,6 @@ namespace reaction {
 ///
 /// This class is also responsible for returning response events to callers of the invoke functions. Response events can
 /// be bundled together into more complex system event messages to be processed by the client application.
-///
 class EventDispatcher {
 public:
     // The following are typedefs for objects used by the function based event handler. Events of this type
@@ -105,8 +103,8 @@ public:
     ///
     /// @param action_id Action ID of the pipe send a null value through.
     ///
-    /// Much like \c setExceptionOnPipe but sends a nullptr on the promise/future pipe causing the future::get
-    /// function to return immediately.
+    /// Much like \c setExceptionOnPipe but sends a nullptr on the promise/future pipe causing the future::get function
+    /// to return immediately.
     ///
     /// This won't raise an exception but the client code invoking future::get will need to check the received value to
     /// be non-null.

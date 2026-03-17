@@ -14,11 +14,9 @@ namespace cpp_ami::net {
 
 class TcpSocket;
 
-///
 /// @class SocketReader
 ///
 /// @brief Starts a thread that reads data from a socket object.
-///
 class SocketReader {
 public:
     using handler_t = std::function<void(std::string)>;
@@ -31,8 +29,8 @@ public:
     SocketReader(SocketReader const &) = delete;
     SocketReader(SocketReader &&) = delete;
 
-    /// @brief Constructs a new object that will read data from \c socket, when data is received callback
-    ///        \c handler will be invoked with the received data.
+    /// @brief Constructs a new object that will read data from \c socket, when data is received callback \c handler
+    ///        will be invoked with the received data.
     ///
     /// @param socket Socket to read data from.
     /// @param callback Callback function to invoke on received data.
@@ -51,16 +49,15 @@ private:
     /// @brief Stops the data reader work thread.
     void stopWorkThread();
 
-    /// @brief Implements the work thread responsible for reading data from the socket and invoking the
-    ///        data callback on received data.
+    /// @brief Implements the work thread responsible for reading data from the socket and invoking the data callback on
+    ///        received data.
     void workThread() const;
 
     handler_t callback_{ [](std::string) -> void { } }; ///< Callback that will be invoked whenever new data as been read from \c m_socket.
 
     std::thread thread_;                        ///< Handle to data read thread.
     std::atomic<bool> thread_spin_{ false };    ///< Flag indicating if flag is still running.
-
-    socket_ptr_t socket_;       ///< Socket to read data from.
+    socket_ptr_t socket_;                       ///< Socket to read data from.
 };
 
 }

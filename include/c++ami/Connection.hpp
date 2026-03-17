@@ -25,7 +25,6 @@ class SocketWriter;
 class EventDispatcher;
 class StreamParser;
 
-///
 /// @class Connection
 ///
 /// @brief Manages the individual threads that manage communication with the AMI server and provides an interface for an
@@ -33,7 +32,6 @@ class StreamParser;
 ///
 /// This object constructs and manages the lifetime of objects that communicate with the AMI server. AMI client
 /// applications will construct one of these objects to use as a handle to communicate to the AMI server.
-///
 class Connection {
 public:
     using reaction_ptr_t = EventDispatcher::reaction_ptr_t;
@@ -62,8 +60,8 @@ public:
     /// @return String containing AMI server version.
     std::string getAmiVersion() const;
 
-    /// @brief Sends \c action to the AMI server and immediately returns. The client application will need
-    ///        to add callbacks to handle the responding events.
+    /// @brief Sends \c action to the AMI server and immediately returns. The client application will need to add
+    ///        callbacks to handle the responding events.
     ///
     /// @param action Action to send to the AMI server.
     void asyncInvoke(action::Action const &action) const;

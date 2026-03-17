@@ -24,7 +24,7 @@ StreamParser::~StreamParser()
 
 void StreamParser::addBuf(std::string buf)
 {
-    std::unique_lock const lock(stream_chunks_mutex_);
+    std::lock_guard const lock(stream_chunks_mutex_);
     stream_chunks_.push_back(std::move(buf));
     thread_cv_.notify_one();
 }
@@ -67,7 +67,7 @@ void StreamParser::workThread()
         stream_chunks.clear();
     }
 
-    std::unique_lock const lock(stream_chunks_mutex_);
+    std::lock_guard const lock(stream_chunks_mutex_);
     for (auto &stream_chunk : stream_chunks_) {
         processChunk(std::move(stream_chunk));
     }

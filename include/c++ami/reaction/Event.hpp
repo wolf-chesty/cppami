@@ -9,7 +9,6 @@
 
 namespace cpp_ami::reaction {
 
-///
 /// @class Event
 ///
 /// @brief Contains data for an AMI event that is associated to an AMI action.
@@ -17,7 +16,6 @@ namespace cpp_ami::reaction {
 /// This object is an interface for an AMI event object that is associated with an AMI action. By inheriting matched
 /// events from this base class it can be a bit easier writing polymorphic code taking advantage of the type of this
 /// object.
-///
 class Event
     : public Reaction
     , public util::KeyValDict

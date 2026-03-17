@@ -8,11 +8,9 @@
 
 namespace cpp_ami::util {
 
-///
 /// @class ScopeGuard
 ///
 /// @brief Allows you to set a function that will be invoked when the lifetime of this object expires.
-///
 class ScopeGuard {
 public:
     using callback_t = std::function<void()>;
