@@ -1,98 +1,99 @@
-cmake_minimum_required (VERSION 3.12)
-cmake_policy (VERSION 3.12)
+cmake_minimum_required(VERSION 3.12)
+cmake_policy(VERSION 3.12)
 
-set (CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 20)
 
-project (c++ami VERSION 0.0.0.0 LANGUAGES CXX C)
+project(c++ami VERSION 0.0.0.0 LANGUAGES CXX C)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Options
 # ----------------------------------------------------------------------------------------------------------------------
-option (CPPAMI_COVERAGE "Enable GCC Coverage" OFF)
-option (CPPAMI_SANITIZE_ADDRESS "Enable AddressSanitizer (ASan) for memory error detection tests." OFF)
-option (CPPAMI_SANITIZE_THREAD "Enable ThreadSanitizer (TSan) for detecting thread-related issues." OFF)
-option (CPPAMI_BUILD_TESTS "Build unit tests" ON)
-option (CPPAMI_EXAMPLE "Build example" ON)
+option(CPPAMI_COVERAGE "Enable GCC Coverage" OFF)
+option(CPPAMI_SANITIZE_ADDRESS "Enable AddressSanitizer (ASan) for memory error detection tests." OFF)
+option(CPPAMI_SANITIZE_THREAD "Enable ThreadSanitizer (TSan) for detecting thread-related issues." OFF)
+option(CPPAMI_BUILD_TESTS "Build unit tests" ON)
+option(CPPAMI_EXAMPLE "Build example" ON)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Project dependencies
 # ----------------------------------------------------------------------------------------------------------------------
-include (third_party/fmt.cmake)
+include(third_party/fmt.cmake)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Project definition
 # ----------------------------------------------------------------------------------------------------------------------
-add_library (c++ami OBJECT "")
+add_library(c++ami OBJECT "")
 
-target_include_directories (c++ami
+target_include_directories(c++ami
     PUBLIC
-        ${CMAKE_CURRENT_LIST_DIR}/include
+    ${CMAKE_CURRENT_LIST_DIR}/include
 )
 
-target_link_libraries (c++ami
+target_link_libraries(c++ami
     PUBLIC
-        fmt
-        pthread
-        uuid
+    fmt
+    pthread
+    uuid
 )
 
-target_sources (c++ami
+target_sources(c++ami
     PRIVATE
-        src/action/Action.cpp
-        src/action/Challenge.cpp
-        src/action/DeviceStateList.cpp
-        src/action/Events.cpp
-        src/action/ExtensionState.cpp
-        src/action/ExtensionStateList.cpp
-        src/action/Getvar.cpp
-        src/action/ListCommands.cpp
-        src/action/Login.cpp
-        src/action/Logoff.cpp
-        src/action/MailboxCount.cpp
-        src/action/MailboxStatus.cpp
-        src/action/MessageSend.cpp
-        src/action/Park.cpp
-        src/action/ParkedCalls.cpp
-        src/action/Parkinglots.cpp
-        src/action/Ping.cpp
-        src/action/VoicemailBoxSummary.cpp
-        src/action/VoicemailRefresh.cpp
+    src/action/Action.cpp
+    src/action/Challenge.cpp
+    src/action/DeviceStateList.cpp
+    src/action/Events.cpp
+    src/action/ExtensionState.cpp
+    src/action/ExtensionStateList.cpp
+    src/action/Getvar.cpp
+    src/action/ListCommands.cpp
+    src/action/Login.cpp
+    src/action/Logoff.cpp
+    src/action/MailboxCount.cpp
+    src/action/MailboxStatus.cpp
+    src/action/MessageSend.cpp
+    src/action/Park.cpp
+    src/action/ParkedCalls.cpp
+    src/action/Parkinglots.cpp
+    src/action/Ping.cpp
+    src/action/Setvar.cpp
+    src/action/VoicemailBoxSummary.cpp
+    src/action/VoicemailRefresh.cpp
 
-        src/event/Event.cpp
+    src/event/Event.cpp
 
-        src/net/SocketReader.cpp
-        src/net/SocketWriter.cpp
-        src/net/TcpSocket.cpp
+    src/net/SocketReader.cpp
+    src/net/SocketWriter.cpp
+    src/net/TcpSocket.cpp
 
-        src/reaction/Event.cpp
-        src/reaction/EventList.cpp
-        src/reaction/Reaction.cpp
+    src/reaction/Event.cpp
+    src/reaction/EventList.cpp
+    src/reaction/Reaction.cpp
 
-        src/util/KeyValDict.cpp
-        src/util/ScopeGuard.cpp
+    src/util/KeyValDict.cpp
+    src/util/ScopeGuard.cpp
 
-        src/Connection.cpp
-        src/EventDispatcher.cpp
-        src/StreamParser.cpp
+    src/Connection.cpp
+    src/EventDispatcher.cpp
+    src/StreamParser.cpp
 )
 
 if (CPPAMI_COVERAGE)
-    target_compile_options (c++ami PRIVATE -O0 --coverage -g)
-    target_link_options (c++ami PRIVATE --coverage)
-    target_link_libraries (c++ami PRIVATE gcov)
+    target_compile_options(c++ami PRIVATE -O0 --coverage -g)
+    target_link_options(c++ami PRIVATE --coverage)
+    target_link_libraries(c++ami PRIVATE gcov)
 elseif (CPPAMI_SANITIZE_ADDRESS)
-    target_compile_options (c++ami PRIVATE -fsanitize=address,undefined -fno-omit-frame-pointer -g)
-    target_link_options (c++ami PRIVATE -fsanitize=address,undefined)
+    target_compile_options(c++ami PRIVATE -fsanitize=address,undefined -fno-omit-frame-pointer -g)
+    target_link_options(c++ami PRIVATE -fsanitize=address,undefined)
 elseif (CPPAMI_SANITIZE_THREAD)
-    target_compile_options (c++ami PRIVATE -fsanitize=thread -fno-omit-frame-pointer -g)
-    target_link_options (c++ami PRIVATE -fsanitize=thread)
+    target_compile_options(c++ami PRIVATE -fsanitize=thread -fno-omit-frame-pointer -g)
+    target_link_options(c++ami PRIVATE -fsanitize=thread)
 endif ()
 
 if (CPPAMI_BUILD_TESTS)
-    include (third_party/googletest.cmake)
-    add_subdirectory (tests)
+    include(third_party/googletest.cmake)
+    add_subdirectory(tests)
 endif ()
 
 if (CPPAMI_EXAMPLE)
-    add_subdirectory (example)
+    add_subdirectory(example)
 endif ()
