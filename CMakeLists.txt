@@ -55,6 +55,7 @@ target_sources(c++ami
     src/action/ParkedCalls.cpp
     src/action/Parkinglots.cpp
     src/action/Ping.cpp
+    src/action/PjsipNotify.cpp
     src/action/Setvar.cpp
     src/action/VoicemailBoxSummary.cpp
     src/action/VoicemailRefresh.cpp

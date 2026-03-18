@@ -8,6 +8,8 @@
 #include "c++ami/net/SocketWriter.hpp"
 #include "c++ami/net/TcpSocket.hpp"
 #include "c++ami/StreamParser.hpp"
+#include <algorithm>
+#include <execution>
 #include <fmt/core.h>
 
 using namespace cpp_ami;
@@ -46,9 +48,8 @@ std::string Connection::getAmiVersion() const
 void Connection::dispatchHandler(EventDispatcher::event_ptr_t dict)
 {
     std::lock_guard const lock(callbacks_mutex_);
-    for (auto const &[_, callback] : callbacks_) {
-        callback(dict.get());
-    }
+    std::for_each(std::execution::par, callbacks_.begin(), callbacks_.end(),
+                  [&dict](auto const &it) { it.second(dict.get()); });
 }
 
 Connection::event_callback_key_t Connection::addCallback(event_callback_t callback)

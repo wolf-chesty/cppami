@@ -64,7 +64,7 @@ void EventDispatcher::workThread()
     while (thread_run_) {
         std::unique_lock lock(events_mutex_);
         thread_cv_.wait(lock, [this]() -> bool { return !thread_run_ || !events_.empty(); });
-        ;
+
         std::swap(events_, events);
         lock.unlock();
 
