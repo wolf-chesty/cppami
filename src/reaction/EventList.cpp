@@ -81,3 +81,8 @@ cpp_ami::event::Event const &EventList::getEvent(size_t event_idx) const
     assert(event_idx < events_.size());
     return events_[event_idx];
 }
+
+void EventList::forEach(std::function<void(event::Event const &)> function)
+{
+    std::for_each(events_.begin(), events_.end(), function);
+}

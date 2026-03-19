@@ -7,6 +7,7 @@
 #include "c++ami/reaction/Reaction.hpp"
 
 #include "c++ami/event/Event.hpp"
+#include <functional>
 #include <memory>
 #include <vector>
 
@@ -56,6 +57,11 @@ public:
     ///
     /// @param dict \c KeyValDict containing data for the new event to add to this object.
     bool addEvent(util::KeyValDict dict);
+
+    /// @brief Invokes lambda \c function on each event in the event list.
+    ///
+    /// @param function Lambda function to invoke on each event in the collection.
+    void forEach(std::function<void(event::Event const &)> function);
 
     // cpp_ami::reaction::Reaction interface
     bool isSuccess() const override;
