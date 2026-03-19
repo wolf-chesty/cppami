@@ -9,6 +9,7 @@
 namespace cpp_ami::action {
 
 class PJSIPNotify : public Action {
+public:
     PJSIPNotify();
 };
 

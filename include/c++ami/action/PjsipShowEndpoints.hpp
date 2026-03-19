@@ -9,6 +9,7 @@
 namespace cpp_ami::action {
 
 class PJSIPShowEndpoints : public Action {
+public:
     PJSIPShowEndpoints();
 };
 
