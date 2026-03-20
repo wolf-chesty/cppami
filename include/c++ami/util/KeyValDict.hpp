@@ -32,7 +32,10 @@ public:
     /// @brief Constructs an object containing keys \c ordered_keys.
     ///
     /// @param ordered_keys Ordered keys for the object.
-    explicit KeyValDict(std::vector<std::string> ordered_keys, std::unordered_set<std::string> optional_keys = {});
+    /// @param optional_keys Optional keys for the object.
+    /// @param list_keys Keys that contain lists of elements.
+    explicit KeyValDict(std::vector<std::string> ordered_keys, std::unordered_set<std::string> optional_keys = {},
+                        std::unordered_set<std::string> list_keys = {});
 
     virtual ~KeyValDict() = default;
 
@@ -88,15 +91,27 @@ public:
     /// @return \c true if key is optional for this object.
     bool isOptional(std::string const &key) const;
 
+    /// @brief Returns \c true if the key value contains a list of values.
+    ///
+    /// @return \c true if the keys contains a list of values.
+    bool isList(std::string const &key) const;
+
+    /// @brief Splits value into separate values.
+    ///    /// @param value Value to split.
+    ///
+    /// @return List of values.
+    std::vector<std::string> split(std::string const &value) const;
+
 protected:
     /// @brief Initializes the object using the key/value pairs found in \c event_buf.
     ///
     /// @param event_buf String containing AMI key/value pairs.
-    void setMessage(std::string event_buf);
+    void setMessage(std::string const &event_buf);
 
 private:
     std::vector<std::string> ordered_keys_;               ///< Collection of ordered keys for object.
     std::unordered_set<std::string> optional_keys_;       ///< Optional keys for object.
+    std::unordered_set<std::string> list_keys_;           ///< Keys containing lists of values.
     std::unordered_map<std::string, std::string> values_; ///< Collection of Key/value pairs.
 };
 

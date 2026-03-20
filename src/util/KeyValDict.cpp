@@ -17,9 +17,11 @@ KeyValDict::KeyValDict(std::string event_buf)
     setMessage(std::move(event_buf));
 }
 
-KeyValDict::KeyValDict(std::vector<std::string> ordered_keys, std::unordered_set<std::string> optional_keys)
+KeyValDict::KeyValDict(std::vector<std::string> ordered_keys, std::unordered_set<std::string> optional_keys,
+                       std::unordered_set<std::string> list_keys)
     : ordered_keys_(std::move(ordered_keys))
     , optional_keys_(std::move(optional_keys))
+    , list_keys_(std::move(list_keys))
 {
 #ifndef NDEBUG
     for (auto const &optional_key : optional_keys_) {
@@ -76,7 +78,7 @@ void KeyValDict::setValue(std::string const &key, std::string val)
     values_[key] = std::move(val);
 }
 
-void KeyValDict::setMessage(std::string event_buf)
+void KeyValDict::setMessage(std::string const &event_buf)
 {
     assert(!event_buf.empty());
 
@@ -90,6 +92,7 @@ void KeyValDict::setMessage(std::string event_buf)
         }
 
         std::string_view key(event_buf.data() + key_beg, key_end - key_beg);
+
         // Maintain key order
         ordered_keys_.emplace_back(key);
 
@@ -110,7 +113,14 @@ std::string KeyValDict::toString() const
     for (auto const &key : ordered_keys_) {
         auto const it_val = values_.find(key);
         if (it_val != values_.end()) {
-            action_string += fmt::format("{}{}{}{}", key, SEP, it_val->second, EOR);
+            if (isList(key)) {
+                for (auto const &val : split(it_val->second)) {
+                    action_string += fmt::format("{}{}{}{}", key, SEP, val, EOR);
+                }
+            }
+            else {
+                action_string += fmt::format("{}{}{}{}", key, SEP, it_val->second, EOR);
+            }
         }
         else if (!isOptional(key)) {
             action_string += fmt::format("{}{}{}{}", key, SEP, "", EOR);
@@ -122,4 +132,31 @@ std::string KeyValDict::toString() const
 bool KeyValDict::isOptional(std::string const &key) const
 {
     return optional_keys_.find(key) != optional_keys_.end();
+}
+
+bool KeyValDict::isList(std::string const &key) const
+{
+    return list_keys_.find(key) != list_keys_.end();
+}
+
+std::vector<std::string> KeyValDict::split(std::string const &value) const
+{
+    std::vector<std::string> values;
+
+    size_t beg = 0;
+    size_t end = 0;
+    while (end != std::string::npos) {
+        end = value.find(SEP, beg);
+        if (end == std::string::npos) {
+            if (auto sub = value.substr(beg, end); !sub.empty()) {
+                values.push_back(value.substr(beg, end));
+            }
+        }
+        else {
+            values.push_back(value.substr(beg, end));
+            beg = end + SEP.length();
+        }
+    }
+
+    return values;
 }
