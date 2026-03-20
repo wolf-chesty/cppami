@@ -16,7 +16,7 @@ public:
     Action(Action const &) = default;
     Action(Action &&) noexcept = default;
     explicit Action(std::string action, std::vector<std::string> ordered_keys = {},
-                    std::unordered_set<std::string> optional_keys = {});
+                    std::unordered_set<std::string> optional_keys = {}, std::unordered_set<std::string> list_keys = {});
     ~Action() override = default;
 
     Action &operator=(Action const &) = default;
