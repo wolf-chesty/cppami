@@ -11,8 +11,7 @@
 #include <memory>
 #include <vector>
 
-namespace cpp_ami {
-namespace reaction {
+namespace cpp_ami::reaction {
 
 /// @class EventList
 ///
@@ -61,7 +60,7 @@ public:
     /// @brief Invokes lambda \c function on each event in the event list.
     ///
     /// @param function Lambda function to invoke on each event in the collection.
-    void forEach(std::function<void(event::Event const &)> function);
+    void forEach(std::function<void(event::Event const &)> function) const;
 
     // cpp_ami::reaction::Reaction interface
     bool isSuccess() const override;
@@ -78,7 +77,6 @@ private:
     std::vector<event::Event> events_;         ///< AMI events that make up this object.
 };
 
-} // namespace reaction
-} // namespace cpp_ami
+} // namespace cpp_ami::reaction
 
 #endif

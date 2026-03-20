@@ -82,7 +82,7 @@ cpp_ami::event::Event const &EventList::getEvent(size_t event_idx) const
     return events_[event_idx];
 }
 
-void EventList::forEach(std::function<void(event::Event const &)> function)
+void EventList::forEach(std::function<void(event::Event const &)> function) const
 {
     std::for_each(events_.begin(), events_.end(), function);
 }
