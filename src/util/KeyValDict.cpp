@@ -202,3 +202,20 @@ std::vector<std::string> KeyValDict::fromString(std::string const &key, std::str
 
     return values;
 }
+
+std::string KeyValDict::escape(std::string const &str)
+{
+    std::string escaped_str;
+    escaped_str.reserve(str.capacity());
+
+    for (auto const c : str) {
+        if (c != '"') {
+            escaped_str += c;
+        }
+        else {
+            escaped_str += "\\\"";
+        }
+    }
+
+    return escaped_str;
+}

@@ -69,3 +69,9 @@ TEST(ami_test, value_array_empty)
         EXPECT_EQ(in[i], out[i]);
     }
 }
+
+TEST(ami_test, escaped_string)
+{
+    auto const value = cpp_ami::util::KeyValDict::escape("\"This\" is a \"test\".");
+    EXPECT_EQ(value, "\\\"This\\\" is a \\\"test\\\".");
+}

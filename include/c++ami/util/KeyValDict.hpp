@@ -125,6 +125,14 @@ public:
     /// @param value String representation of values.
     static std::vector<std::string> fromString(std::string const &key, std::string const &value);
 
+    /// @brief Returns an escaped string for use with AMI. Strings containing double quotes (") should be escaped
+    ///        through this function before being used as an AMI value.
+    ///
+    /// @return Escaped string.
+    ///
+    /// @param value Value to escape.
+    static std::string escape(std::string const &value);
+
 protected:
     /// @brief Initializes the object using the key/value pairs found in \c event_buf.
     ///
