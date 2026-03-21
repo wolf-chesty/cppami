@@ -36,7 +36,7 @@ class Connection {
 public:
     using reaction_ptr_t = EventDispatcher::reaction_ptr_t;
 
-    using event_callback_t = std::function<void(EventDispatcher::event_t const *)>;
+    using event_callback_t = std::function<void(EventDispatcher::event_t const &)>;
     using event_callback_key_t = std::string;
 
 public:
@@ -99,6 +99,13 @@ private:
     /// @param dict Event values.
     void dispatchHandler(EventDispatcher::event_ptr_t dict);
 
+    /// @brief Starts the work thread.
+    void startDispatchThread();
+    /// @brief Stops the work thread.
+    void stopDispatchThread();
+    /// @brief Event dispatch thread.
+    void dispatchThread();
+
     std::string ami_version_; ///< AMI version.
 
     std::unordered_map<event_callback_key_t, event_callback_t> callbacks_; ///< Collection of event callbacks.
@@ -109,6 +116,12 @@ private:
     std::unique_ptr<net::SocketWriter> writer_;   ///< Object responsible for writing messages to the AMI socket.
     std::unique_ptr<StreamParser>
         stream_parser_; ///< Object responsible for parsing the socket stream into individual AMI messages.
+
+    std::vector<EventDispatcher::event_ptr_t> events_; ///< Collection of events to dispatch.
+    std::mutex events_mut_;                       ///< Mutex controlling access to collection of events to dispatch.
+    std::condition_variable events_cv_;           ///< Condition to wake event dispatch thread.
+    std::atomic<bool> event_dispatch_thread_run_; ///< Flag controlling event dispatch thread.
+    std::thread event_dispatch_thread_;           ///< Handle to event dispatch thread.
 };
 
 } // namespace cpp_ami
