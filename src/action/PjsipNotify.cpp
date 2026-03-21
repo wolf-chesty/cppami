@@ -7,6 +7,6 @@ using namespace cpp_ami::action;
 
 PJSIPNotify::PJSIPNotify()
     : Action("PJSIPNotify", {"Endpoint", "URI", "channel", "Option", "Variable"},
-             {"Endpoint", "URI", "channel", "Option", "Variable"}, {"Variable"})
+             {"Endpoint", "URI", "channel", "Option", "Variable"})
 {
 }

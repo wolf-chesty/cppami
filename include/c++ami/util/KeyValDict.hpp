@@ -33,9 +33,7 @@ public:
     ///
     /// @param ordered_keys Ordered keys for the object.
     /// @param optional_keys Optional keys for the object.
-    /// @param list_keys Keys that contain lists of elements.
-    explicit KeyValDict(std::vector<std::string> ordered_keys, std::unordered_set<std::string> optional_keys = {},
-                        std::unordered_set<std::string> list_keys = {});
+    explicit KeyValDict(std::vector<std::string> ordered_keys, std::unordered_set<std::string> optional_keys = {});
 
     virtual ~KeyValDict() = default;
 
@@ -91,16 +89,41 @@ public:
     /// @return \c true if key is optional for this object.
     bool isOptional(std::string const &key) const;
 
-    /// @brief Returns \c true if the key value contains a list of values.
-    ///
-    /// @return \c true if the keys contains a list of values.
-    bool isList(std::string const &key) const;
-
     /// @brief Splits value into separate values.
-    ///    /// @param value Value to split.
+    ///
+    /// @param value Value to split.
     ///
     /// @return List of values.
     std::vector<std::string> split(std::string const &value) const;
+
+    /// @brief Encodes multiple values into a value.
+    ///
+    /// @param key Key to set values on.
+    /// @param values Collection of values.
+    void setValues(std::string const &key, std::vector<std::string> const &values);
+
+    /// @brief Decodes multiple values from an array.
+    ///
+    /// @return Collection of values.
+    ///
+    /// @param key Ket to pull value from.
+    std::vector<std::string> getValues(std::string const &key) const;
+
+    /// @brief Encodes a collection of values into a string.
+    ///
+    /// @return String representation of a collection of values.
+    ///
+    /// @param key Key of value.
+    /// @param values Collection of values.
+    static std::string toString(std::string const &key, std::vector<std::string> const &values);
+
+    /// @brief Decodes a collection of values from a string.
+    ///
+    /// @return Collection of values.
+    ///
+    /// @param key Key of value.
+    /// @param value String representation of values.
+    static std::vector<std::string> fromString(std::string const &key, std::string const &value);
 
 protected:
     /// @brief Initializes the object using the key/value pairs found in \c event_buf.
@@ -111,7 +134,6 @@ protected:
 private:
     std::vector<std::string> ordered_keys_;               ///< Collection of ordered keys for object.
     std::unordered_set<std::string> optional_keys_;       ///< Optional keys for object.
-    std::unordered_set<std::string> list_keys_;           ///< Keys containing lists of values.
     std::unordered_map<std::string, std::string> values_; ///< Collection of Key/value pairs.
 };
 
