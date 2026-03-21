@@ -37,7 +37,7 @@ public:
     // cpp_ami::reaction::Reaction interface
     bool isSuccess() const override;
     std::string toString() const override;
-    void forEach(std::function<void(event::Event const &)> lambda) const override;
+    void forEach(for_each_lambda_t lambda) const override;
 };
 
 } // namespace cpp_ami::reaction

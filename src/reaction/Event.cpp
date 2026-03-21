@@ -27,7 +27,7 @@ std::string Event::toString() const
     return KeyValDict::toString();
 }
 
-void Event::forEach(std::function<void(event::Event const &)> lambda) const
+void Event::forEach(for_each_lambda_t lambda) const
 {
     lambda(event::Event(*this));
 }

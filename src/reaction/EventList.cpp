@@ -82,7 +82,11 @@ cpp_ami::event::Event const &EventList::getEvent(size_t event_idx) const
     return events_[event_idx];
 }
 
-void EventList::forEach(std::function<void(event::Event const &)> lambda) const
+void EventList::forEach(for_each_lambda_t lambda) const
 {
-    std::for_each(events_.begin(), events_.end(), lambda);
+    for (auto const &event : events_) {
+        if (lambda(event)) {
+            break;
+        }
+    }
 }

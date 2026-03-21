@@ -19,6 +19,9 @@ namespace cpp_ami::reaction {
 /// messages that get sent by the system when system events occur.
 class Reaction {
 public:
+    using for_each_lambda_t = std::function<bool(event::Event const &)>;
+
+public:
     Reaction() = default;
     Reaction(Reaction const &) = default;
     Reaction(Reaction &&) noexcept = default;
@@ -40,7 +43,7 @@ public:
     /// @brief Invokes \c lambda on each event in this object.
     ///
     /// @param lambda Lambda function to invoke on each event in this object.
-    virtual void forEach(std::function<void(event::Event const &)> lambda) const = 0;
+    virtual void forEach(for_each_lambda_t lambda) const = 0;
 
 protected:
     /// @brief Returns \c true if \c status contains values indicating that the AMI action completed successfully.

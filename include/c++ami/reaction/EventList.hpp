@@ -58,7 +58,7 @@ public:
     /// @brief Invokes \c lambda on each event in this object.
     ///
     /// @param lambda Lambda function to invoke on each event in this object.
-    void forEach(std::function<void(event::Event const &)> lambda) const override;
+    void forEach(for_each_lambda_t lambda) const override;
 
     // cpp_ami::reaction::Reaction interface
     bool isSuccess() const override;
