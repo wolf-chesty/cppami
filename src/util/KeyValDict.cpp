@@ -146,7 +146,7 @@ std::vector<std::string> KeyValDict::split(std::string const &value) const
     size_t beg = 0;
     size_t end = 0;
     while (end != std::string::npos) {
-        end = value.find(SEP, beg);
+        end = value.find(EOR, beg);
         if (end == std::string::npos) {
             if (auto sub = value.substr(beg, end); !sub.empty()) {
                 values.push_back(value.substr(beg, end));
@@ -154,7 +154,7 @@ std::vector<std::string> KeyValDict::split(std::string const &value) const
         }
         else {
             values.push_back(value.substr(beg, end));
-            beg = end + SEP.length();
+            beg = end + EOR.length();
         }
     }
 
