@@ -64,6 +64,8 @@ target_sources(c++ami
     src/action/PjsipShowRegistrationsInbound.cpp
     src/action/PjsipShowRegistrationsOutbound.cpp
     src/action/PjsipShowResourceLists.cpp
+    src/action/PjsipShowSubscriptionsInbound.cpp
+    src/action/PjsipShowSubscriptionsOutbound.cpp
     src/action/Setvar.cpp
     src/action/VoicemailBoxSummary.cpp
     src/action/VoicemailRefresh.cpp
