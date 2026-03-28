@@ -62,6 +62,7 @@ target_sources(c++ami
     src/action/PjsipShowEndpoints.cpp
     src/action/PjsipShowRegistrationInboundContactStatuses.cpp
     src/action/PjsipShowRegistrationsInbound.cpp
+    src/action/PjsipShowRegistrationsOutbound.cpp
     src/action/Setvar.cpp
     src/action/VoicemailBoxSummary.cpp
     src/action/VoicemailRefresh.cpp
