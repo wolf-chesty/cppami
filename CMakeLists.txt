@@ -56,6 +56,7 @@ target_sources(c++ami
     src/action/Parkinglots.cpp
     src/action/Ping.cpp
     src/action/PjsipNotify.cpp
+    src/action/PjsipShowAuths.cpp
     src/action/PjsipShowEndpoints.cpp
     src/action/PjsipShowRegistrationInboundContactStatuses.cpp
     src/action/Setvar.cpp
