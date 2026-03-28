@@ -58,6 +58,7 @@ target_sources(c++ami
     src/action/PjsipNotify.cpp
     src/action/PjsipShowAuths.cpp
     src/action/PjsipShowContacts.cpp
+    src/action/PjsipShowEndpoint.cpp
     src/action/PjsipShowEndpoints.cpp
     src/action/PjsipShowRegistrationInboundContactStatuses.cpp
     src/action/Setvar.cpp
