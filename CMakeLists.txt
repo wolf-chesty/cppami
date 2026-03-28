@@ -11,8 +11,8 @@ project(c++ami VERSION 0.0.0.0 LANGUAGES CXX C)
 option(CPPAMI_COVERAGE "Enable GCC Coverage" OFF)
 option(CPPAMI_SANITIZE_ADDRESS "Enable AddressSanitizer (ASan) for memory error detection tests." OFF)
 option(CPPAMI_SANITIZE_THREAD "Enable ThreadSanitizer (TSan) for detecting thread-related issues." OFF)
-option(CPPAMI_BUILD_TESTS "Build unit tests" ON)
-option(CPPAMI_EXAMPLE "Build example" ON)
+option(CPPAMI_BUILD_TESTS "Build unit tests" OFF)
+option(CPPAMI_EXAMPLE "Build example" OFF)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Project dependencies
