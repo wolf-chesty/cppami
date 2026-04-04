@@ -45,6 +45,8 @@ target_sources(c++ami
     src/action/Events.cpp
     src/action/ExtensionState.cpp
     src/action/ExtensionStateList.cpp
+    src/action/GetConfig.cpp
+    src/action/GetConfigJson.cpp
     src/action/Getvar.cpp
     src/action/ListCommands.cpp
     src/action/Login.cpp
