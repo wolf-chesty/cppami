@@ -27,9 +27,7 @@ void SocketReader::startWorkThread()
     thread_spin_ = true;
     thread_ = std::thread(&SocketReader::workThread, this);
 
-    std::string_view thread_name("ami_reader");
-    assert(thread_name.length() <= 16);
-    pthread_setname_np(thread_.native_handle(), thread_name.data());
+    pthread_setname_np(thread_.native_handle(), "ami_reader");
 }
 
 void SocketReader::stopWorkThread()

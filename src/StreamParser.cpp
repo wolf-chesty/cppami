@@ -34,9 +34,7 @@ void StreamParser::startWorkThread()
     thread_run_ = true;
     thread_ = std::thread(&StreamParser::workThread, this);
 
-    std::string_view thread_name("ami_parser");
-    assert(thread_name.length() <= 16);
-    pthread_setname_np(thread_.native_handle(), thread_name.data());
+    pthread_setname_np(thread_.native_handle(), "ami_parser");
 }
 
 void StreamParser::stopWorkThread()

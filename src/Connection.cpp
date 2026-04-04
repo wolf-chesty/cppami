@@ -116,9 +116,7 @@ void Connection::startDispatchThread()
     event_dispatch_thread_run_ = true;
     event_dispatch_thread_ = std::thread(&Connection::dispatchThread, this);
 
-    std::string_view thread_name("conn_dispatch");
-    assert(thread_name.length() <= 16);
-    pthread_setname_np(event_dispatch_thread_.native_handle(), thread_name.data());
+    pthread_setname_np(event_dispatch_thread_.native_handle(), "conn_dispatch");
 }
 
 void Connection::stopDispatchThread()

@@ -42,9 +42,7 @@ void EventDispatcher::startWorkThread()
     thread_run_ = true;
     thread_ = std::thread(&EventDispatcher::workThread, this);
 
-    std::string_view thread_name("ami_dispatcher");
-    assert(thread_name.length() <= 16);
-    pthread_setname_np(thread_.native_handle(), thread_name.data());
+    pthread_setname_np(thread_.native_handle(), "ami_dispatcher");
 }
 
 void EventDispatcher::stopWorkThread()
