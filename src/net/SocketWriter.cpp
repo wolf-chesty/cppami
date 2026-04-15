@@ -38,7 +38,7 @@ void SocketWriter::startWriteThread()
     write_thread_run_ = true;
     write_thread_ = std::thread(&SocketWriter::writeThread, this);
 
-    pthread_setname_np(write_thread_.native_handle(), "write_thread");
+    pthread_setname_np(write_thread_.native_handle(), "ami_writer");
 }
 
 void SocketWriter::stopWriteThread()
