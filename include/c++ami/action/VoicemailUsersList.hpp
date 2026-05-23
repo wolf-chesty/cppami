@@ -1,16 +1,16 @@
 // Copyright (c) 2026 Christopher L Walker
 // SPDX-License-Identifier: MIT
 
-#ifndef ACTION_MWI_GET_HPP
-#define ACTION_MWI_GET_HPP
+#ifndef ACTION_VOICEMAIL_USERS_LIST_HPP
+#define ACTION_VOICEMAIL_USERS_LIST_HPP
 
 #include "c++ami/action/Action.hpp"
 
 namespace cpp_ami::action {
 
-class MWIGet : public Action {
+class VoicemailUsersList : public Action {
 public:
-    explicit MWIGet(std::string mailbox);
+    explicit VoicemailUsersList();
 };
 
 } // namespace cpp_ami::action

@@ -54,9 +54,6 @@ target_sources(c++ami
     src/action/MailboxCount.cpp
     src/action/MailboxStatus.cpp
     src/action/MessageSend.cpp
-    src/action/MwiDelete.cpp
-    src/action/MwiGet.cpp
-    src/action/MwiUpdate.cpp
     src/action/Park.cpp
     src/action/ParkedCalls.cpp
     src/action/Parkinglots.cpp
@@ -75,7 +72,12 @@ target_sources(c++ami
     src/action/Setvar.cpp
     src/action/UserEvent.cpp
     src/action/VoicemailBoxSummary.cpp
+    src/action/VoicemailForward.cpp
+    src/action/VoicemailMove.cpp
     src/action/VoicemailRefresh.cpp
+    src/action/VoicemailRemove.cpp
+    src/action/VoicemailUsersList.cpp
+    src/action/VoicemailUserStatus.cpp
     src/action/WaitEvent.cpp
 
     src/event/Event.cpp
