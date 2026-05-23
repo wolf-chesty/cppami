@@ -54,6 +54,9 @@ target_sources(c++ami
     src/action/MailboxCount.cpp
     src/action/MailboxStatus.cpp
     src/action/MessageSend.cpp
+    src/action/MwiDelete.cpp
+    src/action/MwiGet.cpp
+    src/action/MwiUpdate.cpp
     src/action/Park.cpp
     src/action/ParkedCalls.cpp
     src/action/Parkinglots.cpp
