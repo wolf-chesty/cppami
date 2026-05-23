@@ -6,7 +6,7 @@
 using namespace cpp_ami::action;
 
 VoicemailRemove::VoicemailRemove(std::string context, std::string mailbox, std::string folder, std::string id)
-    : Action("VoicemailMove", {"Context", "Mailbox", "Folder", "ID"})
+    : Action("VoicemailRemove", {"Context", "Mailbox", "Folder", "ID"})
 {
     setValue("Context", std::move(context));
     setValue("Mailbox", std::move(mailbox));

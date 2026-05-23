@@ -6,7 +6,7 @@
 using namespace cpp_ami::action;
 
 VoicemailUserStatus::VoicemailUserStatus(std::string context, std::string mailbox)
-    : Action("VoicemailMove", {"Context", "Mailbox"})
+    : Action("VoicemailUserStatus", {"Context", "Mailbox"})
 {
     setValue("Context", std::move(context));
     setValue("Mailbox", std::move(mailbox));
