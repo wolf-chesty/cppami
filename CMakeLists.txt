@@ -10,9 +10,9 @@ project(c++ami VERSION 0.0.0.0 LANGUAGES CXX C)
 # ----------------------------------------------------------------------------------------------------------------------
 option(CPPAMI_COVERAGE "Enable GCC Coverage" OFF)
 option(CPPAMI_PERF "Set GCC perf flags" OFF)
-option(CPPAMI_SANITIZE_ADDRESS "Enable AddressSanitizer (ASan) for memory error detection tests." OFF)
-option(CPPAMI_SANITIZE_THREAD "Enable ThreadSanitizer (TSan) for detecting thread-related issues." OFF)
-option(CPPAMI_BUILD_TESTS "Build unit tests" OFF)
+option(CPPAMI_ASAN "Enable AddressSanitizer (ASan) for memory error detection tests." OFF)
+option(CPPAMI_TSAN "Enable ThreadSanitizer (TSan) for detecting thread-related issues." OFF)
+option(CPPAMI_UNIT_TESTS "Build unit tests" OFF)
 option(CPPAMI_EXAMPLE "Build example" OFF)
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -26,19 +26,19 @@ find_package(fmt 12.1.0 REQUIRED)
 add_library(c++ami OBJECT "")
 
 target_include_directories(c++ami
-    PUBLIC
+PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/include
 )
 
 target_link_libraries(c++ami
-    PUBLIC
+PUBLIC
     fmt
     pthread
     uuid
 )
 
 target_sources(c++ami
-    PRIVATE
+PRIVATE
     src/action/Action.cpp
     src/action/Challenge.cpp
     src/action/DeviceStateList.cpp
@@ -98,26 +98,25 @@ target_sources(c++ami
     src/StreamParser.cpp
 )
 
-if (CPPAMI_COVERAGE)
+if(CPPAMI_COVERAGE)
     target_compile_options(c++ami PRIVATE -O0 --coverage -g)
     target_link_options(c++ami PRIVATE --coverage)
     target_link_libraries(c++ami PRIVATE gcov)
-elseif (CPPAMI_PERF)
+elseif(CPPAMI_PERF)
     target_compile_options(c++ami PRIVATE -fno-omit-frame-pointer -g)
     target_link_options(c++ami PRIVATE -fno-omit-frame-pointer -g)
-elseif (CPPAMI_SANITIZE_ADDRESS)
+elseif(CPPAMI_ASAN)
     target_compile_options(c++ami PRIVATE -fsanitize=address,undefined -fno-omit-frame-pointer -g)
     target_link_options(c++ami PRIVATE -fsanitize=address,undefined)
-elseif (CPPAMI_SANITIZE_THREAD)
+elseif(CPPAMI_TSAN)
     target_compile_options(c++ami PRIVATE -fsanitize=thread -fno-omit-frame-pointer -g)
     target_link_options(c++ami PRIVATE -fsanitize=thread)
-endif ()
+endif()
 
-if (CPPAMI_BUILD_TESTS)
-    include(third_party/googletest.cmake)
+if(CPPAMI_UNIT_TESTS)
     add_subdirectory(tests)
-endif ()
+endif()
 
-if (CPPAMI_EXAMPLE)
+if(CPPAMI_EXAMPLE)
     add_subdirectory(example)
-endif ()
+endif()
