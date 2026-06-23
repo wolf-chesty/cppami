@@ -14,9 +14,9 @@ IndentPPDirectives: AfterHash
 IndentWrappedFunctionNames: true
 Language: Cpp
 PointerAlignment: Right
-QualifierAlignment: Right
+#QualifierAlignment: Right
 #QualifierOrder: [ 'inline', 'static', 'constexpr', 'volatile', 'restrict', 'type', 'const' ]
-ReflowComments: Always
+ReflowComments: true
 SortUsingDeclarations: true
 SpaceAfterTemplateKeyword: false
 SpaceBeforeInheritanceColon: true

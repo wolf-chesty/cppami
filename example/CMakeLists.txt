@@ -1,27 +1,13 @@
 add_executable(example "")
 
-set(CMAKE_CXX_STANDARD 17)
+target_compile_features(example PRIVATE cxx_std_20)
 
 target_link_libraries(example
-    PUBLIC
+PUBLIC
     c++ami
 )
 
 target_sources(example
-    PRIVATE
+PRIVATE
     main.cpp
 )
-
-if (CPPAMI_COVERAGE)
-    target_link_options(example PRIVATE --coverage)
-    target_link_libraries(example PRIVATE gcov)
-elseif (CPPAMI_PERF)
-    target_compile_options(example PRIVATE -fno-omit-frame-pointer -g)
-    target_link_options(example PRIVATE -fno-omit-frame-pointer -g)
-elseif (CPPAMI_SANITIZE_ADDRESS)
-    target_compile_options(example PRIVATE -fsanitize=address,undefined -fno-omit-frame-pointer -g)
-    target_link_options(example PRIVATE -fsanitize=address,undefined)
-elseif (CPPAMI_SANITIZE_THREAD)
-    target_compile_options(example PRIVATE -fsanitize=thread -fno-omit-frame-pointer -g)
-    target_link_options(example PRIVATE -fsanitize=thread)
-endif ()

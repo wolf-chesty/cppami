@@ -48,7 +48,11 @@ int TcpSocket::open(std::string_view hostname, uint16_t port)
         }
     });
 
-    addrinfo hints = {.ai_flags = AI_ADDRCONFIG, .ai_family = AF_UNSPEC, .ai_socktype = SOCK_STREAM};
+    addrinfo hints{};
+    hints.ai_flags = AI_ADDRCONFIG;
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+
     addrinfo *res{};
     if (getaddrinfo(hostname.data(), nullptr, &hints, &res) != 0) {
         throw std::runtime_error(fmt::format("Invalid hostname {}", hostname.data()));

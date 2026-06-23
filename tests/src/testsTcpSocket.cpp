@@ -30,7 +30,7 @@ TEST(tcp_socket, write_test)
         auto ret = setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
         EXPECT_EQ(ret, 0);
 
-        sockaddr_in address{0};
+        sockaddr_in address{};
         address.sin_family = AF_INET;
         address.sin_addr.s_addr = INADDR_ANY;
         address.sin_port = htons(port);
@@ -48,7 +48,7 @@ TEST(tcp_socket, write_test)
         EXPECT_GE(new_socket, 0);
         util::ScopeGuard socket_guard([new_socket]() -> void { close(new_socket); });
 
-        char ping[1024] = {0};
+        char ping[1024] = {};
         read(new_socket, ping, sizeof(ping));
         EXPECT_EQ(ping, value);
     });
@@ -79,7 +79,7 @@ TEST(tcp_socket, read_test)
         auto ret = setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
         EXPECT_EQ(ret, 0);
 
-        sockaddr_in address{0};
+        sockaddr_in address{};
         address.sin_family = AF_INET;
         address.sin_addr.s_addr = INADDR_ANY;
         address.sin_port = htons(port);
@@ -129,7 +129,7 @@ TEST(tcp_socket, read_write_test)
         auto ret = setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
         EXPECT_EQ(ret, 0);
 
-        sockaddr_in address{0};
+        sockaddr_in address{};
         address.sin_family = AF_INET;
         address.sin_addr.s_addr = INADDR_ANY;
         address.sin_port = htons(port);

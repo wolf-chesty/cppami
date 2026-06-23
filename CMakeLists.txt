@@ -1,17 +1,11 @@
-cmake_minimum_required(VERSION 3.12)
-cmake_policy(VERSION 3.12)
-
-set(CMAKE_CXX_STANDARD 17)
+cmake_minimum_required(VERSION 3.21)
+cmake_policy(VERSION 3.21)
 
 project(c++ami VERSION 0.0.0.0 LANGUAGES CXX C)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Options
 # ----------------------------------------------------------------------------------------------------------------------
-option(CPPAMI_COVERAGE "Enable GCC Coverage" OFF)
-option(CPPAMI_PERF "Set GCC perf flags" OFF)
-option(CPPAMI_ASAN "Enable AddressSanitizer (ASan) for memory error detection tests." OFF)
-option(CPPAMI_TSAN "Enable ThreadSanitizer (TSan) for detecting thread-related issues." OFF)
 option(CPPAMI_UNIT_TESTS "Build unit tests" OFF)
 option(CPPAMI_EXAMPLE "Build example" OFF)
 
@@ -24,6 +18,8 @@ find_package(fmt 12.1.0 REQUIRED)
 # Project definition
 # ----------------------------------------------------------------------------------------------------------------------
 add_library(c++ami OBJECT "")
+
+target_compile_features(c++ami PRIVATE cxx_std_20)
 
 target_include_directories(c++ami
 PUBLIC
@@ -98,25 +94,6 @@ PRIVATE
     src/StreamParser.cpp
 )
 
-if(CPPAMI_COVERAGE)
-    target_compile_options(c++ami PRIVATE -O0 --coverage -g)
-    target_link_options(c++ami PRIVATE --coverage)
-    target_link_libraries(c++ami PRIVATE gcov)
-elseif(CPPAMI_PERF)
-    target_compile_options(c++ami PRIVATE -fno-omit-frame-pointer -g)
-    target_link_options(c++ami PRIVATE -fno-omit-frame-pointer -g)
-elseif(CPPAMI_ASAN)
-    target_compile_options(c++ami PRIVATE -fsanitize=address,undefined -fno-omit-frame-pointer -g)
-    target_link_options(c++ami PRIVATE -fsanitize=address,undefined)
-elseif(CPPAMI_TSAN)
-    target_compile_options(c++ami PRIVATE -fsanitize=thread -fno-omit-frame-pointer -g)
-    target_link_options(c++ami PRIVATE -fsanitize=thread)
-endif()
+add_subdirectory(tests)
 
-if(CPPAMI_UNIT_TESTS)
-    add_subdirectory(tests)
-endif()
-
-if(CPPAMI_EXAMPLE)
-    add_subdirectory(example)
-endif()
+add_subdirectory(example)

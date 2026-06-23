@@ -4,6 +4,8 @@ include(GoogleTest)
 
 add_executable(cppami_unit_tests "")
 
+target_compile_features(cppami_unit_tests PRIVATE cxx_std_20)
+
 enable_testing()
 
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.30.0")
@@ -33,18 +35,3 @@ PRIVATE
     src/testsStreamParser.cpp
     src/testsTcpSocket.cpp
 )
-
-if(CPPAMI_COVERAGE)
-    target_compile_options(cppami_unit_tests PRIVATE -O0 --coverage -g)
-    target_link_options(cppami_unit_tests PRIVATE --coverage)
-    target_link_libraries(cppami_unit_tests PRIVATE gcov)
-elseif(CPPAMI_PERF)
-    target_compile_options(cppami_unit_tests PRIVATE -fno-omit-frame-pointer -g)
-    target_link_options(cppami_unit_tests PRIVATE -fno-omit-frame-pointer -g)
-elseif(CPPAMI_ASAN)
-    target_compile_options(cppami_unit_tests PRIVATE -fsanitize=address,undefined -fno-omit-frame-pointer -g)
-    target_link_options(cppami_unit_tests PRIVATE -fsanitize=address,undefined)
-elseif(CPPAMI_TSAN)
-    target_compile_options(cppami_unit_tests PRIVATE -fsanitize=thread -fno-omit-frame-pointer -g)
-    target_link_options(cppami_unit_tests PRIVATE -fsanitize=thread)
-endif ()

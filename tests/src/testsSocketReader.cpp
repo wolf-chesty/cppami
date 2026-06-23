@@ -33,7 +33,7 @@ TEST(socket_reader, read_test)
         auto ret = setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
         EXPECT_EQ(ret, 0);
 
-        sockaddr_in address{0};
+        sockaddr_in address{};
         address.sin_family = AF_INET;
         address.sin_addr.s_addr = INADDR_ANY;
         address.sin_port = htons(port);
