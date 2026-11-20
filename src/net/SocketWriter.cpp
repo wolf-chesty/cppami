@@ -28,7 +28,6 @@ void SocketWriter::write(std::string buf)
     if (write_thread_run_) {
         std::lock_guard const lock(write_queue_mut_);
         write_queue_.emplace_back(std::move(buf));
-        socket_->write(buf);
         write_thread_cv_.notify_one();
     }
 }
